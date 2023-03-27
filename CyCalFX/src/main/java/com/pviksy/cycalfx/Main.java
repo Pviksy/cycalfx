@@ -13,6 +13,10 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("CyCalFX");
+
+        DataAccessLayer db = new DataAccessLayer("CyCalFX");
+
+
         stage.setScene(scene);
         stage.show();
     }
