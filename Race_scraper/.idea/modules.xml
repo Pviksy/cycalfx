@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/WebScrapePCS_1.iml" filepath="$PROJECT_DIR$/WebScrapePCS_1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Race_scraper.iml" filepath="$PROJECT_DIR$/Race_scraper.iml" />
     </modules>
   </component>
 </project>
