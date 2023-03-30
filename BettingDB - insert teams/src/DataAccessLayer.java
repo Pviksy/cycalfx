@@ -38,54 +38,6 @@ public class DataAccessLayer {
         }
     }
 
-    public void addTeam(Team team) {
-        try {
-            String sql = "INSERT INTO team VALUES ('" + team.getName() + "', '" +
-                                                        team.getCategory() + "', '" +
-                                                        team.getCountry() + "')";
-
-            Statement statement = connection.createStatement();
-
-            int affectedRows = statement.executeUpdate(sql);
-
-            if (affectedRows == 1) {
-                ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY()");
-
-                if (resultSet.next())
-                    team.setTeam_id(resultSet.getInt(1));
-            }
-        }
-        catch (SQLException e) {
-            System.out.println("Error: could not add team.");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void addRider(Rider rider) {
-        try {
-            String sql = "INSERT INTO rider VALUES ('" + rider.getTeam_id() + "', '" +
-                                                         rider.getFirstname() + "', '" +
-                                                         rider.getLastname() + "', '" +
-                                                         rider.getCountry() + "', '" +
-                                                         rider.getAge() + "')";
-
-            Statement statement = connection.createStatement();
-
-            int affectedRows = statement.executeUpdate(sql);
-
-            if (affectedRows == 1) {
-                ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY()");
-
-                if (resultSet.next())
-                    rider.setRider_id(resultSet.getInt(1));
-            }
-        }
-        catch (SQLException e) {
-            System.out.println("Error: could not add rider.");
-            System.out.println(e.getMessage());
-        }
-    }
-
     public void addRace(Race race) {
         try {
             String sql = "INSERT INTO race VALUES ('" + race.getName() + "', '" +
