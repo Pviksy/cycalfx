@@ -12,7 +12,7 @@ def get_race_urls(starting_month, ending_month):
 
     months = {i: [] for i in range(starting_month, ending_month + 1)}
 
-    race_urls = {"one_day_races": [], "stage_races": []}
+    race_urls = {"one_day_races": set(), "stage_races": set()}
 
     for month in months:
         url = url_template + str(month)
@@ -41,14 +41,15 @@ def get_race_urls(starting_month, ending_month):
 
                     if cat_col[0] == '2':  # if first character of category is 2
                         # stage race
-                        race_urls["stage_races"].append(race_url)
+                        race_urls["stage_races"].add(race_url)
                     else:
                         # one day race
-                        race_urls["one_day_races"].append(race_url)
+                        race_urls["one_day_races"].add(race_url)
     return race_urls
 
 
-race_urls = get_race_urls(9, 10)
+race_urls = get_race_urls(1, 12)
+
 
 
 races = []
@@ -78,25 +79,23 @@ def insert_stage_race(url):
                     date_col         = scrape.stage_date(columns[2])
                     distance_col     = scrape.stage_distance(columns[3])
 
-                    print(number_col, profile_icon_col, date_col, distance_col)
-    else:
-        print("No info page available for race:", url)
+                    #print(number_col, profile_icon_col, date_col, distance_col)
 
     race_id       = service.extract_id(url)
     category      = scrape.category(sidebox)
     name          = scrape.name(sidebox)
-    start_date    = None
-    end_date      = None
+    start_date    = '1970-01-01'
+    end_date      = '1970-01-01'
     logo          = scrape.logo(main_page)
     flag          = scrape.flag(sidebox)
 
     race = (race_id, category, name, start_date, end_date, logo, flag, None, None, None)
 
-    # races.append(race)
+    races.append(race)
 
     for s in race:
         stage_id     = None
-        # race_id    = defined previously
+        # race_id    = /\
         number       = None
         date         = None
         distance     = None
@@ -104,7 +103,7 @@ def insert_stage_race(url):
         profile      = None
 
         stage = (stage_id, race_id, number, date, distance, profile_icon, profile)
-        #stages.append(stage)
+        stages.append(stage)
 
 
 def insert_one_day_race(url):
@@ -133,9 +132,10 @@ def insert_races(dictionary):
             if key == 'stage_races':
                 insert_stage_race(url)
             elif key == 'one_day_races':
-                #insert_one_day_race(url)
+                insert_one_day_race(url)
                 x = 2
-    #db.insert_races(db.conn, races)
+    db.insert_races(db.conn, races)
+    db.insert_stages(db.conn, stages)
     # print(stages)
 
 
