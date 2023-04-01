@@ -13,9 +13,9 @@ conn = pyodbc.connect('Driver=' + DRIVER_NAME + ';'
 def insert_race(race):
     c = conn.cursor()
     c.execute("""INSERT INTO [race] 
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", race)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", race)
     conn.commit()
-    conn.close()
+
 
 
 def insert_stage(stage):
