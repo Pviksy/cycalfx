@@ -69,3 +69,21 @@ def logo(soup):
 
 def name(sidebox):
     return sidebox.find('p').text.strip()
+
+
+def stage_number(column):
+    return column.get_text().strip()
+
+
+def stage_profile_icon(column):
+    stage_profile_icon = column.find('img')['src']
+    if stage_profile_icon:
+        return stage_profile_icon
+
+
+def stage_distance(column):
+    return column.get_text().strip()
+
+
+def stage_date(column):
+    return column.get_text().strip()

@@ -17,6 +17,32 @@ def insert_race(race):
     conn.commit()
 
 
+def insert_races(conn, data):
+    table = 'race'
+    columns = ['id', 'category_id', 'name', 'start_date', 'end_date', 'logo', 'flag', 'distance', 'profile_icon',
+               'profile']
+
+    cursor = conn.cursor()
+    columns_str = ', '.join(columns)
+    placeholders = ', '.join('?' * len(columns))
+    sql = f'INSERT INTO {table} ({columns_str}) VALUES ({placeholders})'
+
+    cursor.executemany(sql, data)
+    conn.commit()
+
+
+def insert_stages(conn, data):
+    table = 'race'
+    columns = ['id', 'race_id', 'number', 'date', 'distance', 'profile_icon', 'profile']
+
+    cursor = conn.cursor()
+    columns_str = ', '.join(columns)
+    placeholders = ', '.join('?' * len(columns))
+    sql = f'INSERT INTO {table} ({columns_str}) VALUES ({placeholders})'
+
+    cursor.executemany(sql, data)
+    conn.commit()
+
 
 def insert_stage(stage):
     c = conn.cursor()
