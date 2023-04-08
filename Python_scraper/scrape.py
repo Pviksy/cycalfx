@@ -31,6 +31,27 @@ def date(sidebox):
         raise ValueError("Invalid date format")
 
 
+def start_end_dates(sidebox):
+    date_string = sidebox.find_all('p')[3].text.strip()
+
+    # Extract start and end days, month, and year using regex
+    match = re.match(r"(\d+)(?:st|nd|rd|th) - (\d+)(?:st|nd|rd|th) (\w+) \| (\d+)", date_string)
+    if match:
+        start_day, end_day, month, year = match.groups()
+
+        # Parse the start and end dates using the extracted days, month, and year
+        start_date = datetime.strptime(f"{start_day} {month} {year}", "%d %B %Y")
+        end_date = datetime.strptime(f"{end_day} {month} {year}", "%d %B %Y")
+
+        # Format the dates as YYYY-MM-DD
+        formatted_start_date = start_date.strftime("%Y-%m-%d")
+        formatted_end_date = end_date.strftime("%Y-%m-%d")
+
+        return formatted_start_date, formatted_end_date
+    else:
+        raise ValueError("Invalid date format")
+
+
 def profile_icon(sidebox):
     profile_icon = sidebox.find('img', {'width': '12'})
     if profile_icon:
@@ -87,3 +108,23 @@ def stage_distance(column):
 
 def stage_date(column):
     return column.get_text().strip()
+
+
+def stage_info_page(table):
+    stage_info = {}
+
+    for row in table.find_all('tr'):
+        columns = row.find_all('td')
+        if len(columns) > 2:
+            number_col = stage_number(columns[0])
+            if number_col != "":
+                profile_icon_col = stage_profile_icon(columns[1])
+                date_col = stage_date(columns[2])
+                distance_col = stage_distance(columns[3])
+                stage_info[number_col] = {
+                    "profile_icon": profile_icon_col,
+                    "date": date_col,
+                    "distance": distance_col,
+                }
+
+    return stage_info

@@ -48,7 +48,7 @@ def get_race_urls(starting_month, ending_month):
     return race_urls
 
 
-race_urls = get_race_urls(1, 12)
+race_urls = get_race_urls(5, 5)
 
 
 
@@ -66,26 +66,28 @@ def insert_stage_race(url):
     main_page     = scrape.get_soup(url)
     sidebox       = main_page.find('div', class_='sideBox')
 
+    # set dates before, incase table is None
+
     table = info_page.find('table', class_='tablesorter')
 
+    stage_info = {}
+
     if table is not None:
-        for row in table.find_all('tr'):
-            columns = row.find_all('td')
-
-            if len(columns) > 2:
-                number_col       = scrape.stage_number(columns[0])
-                if number_col != "":
-                    profile_icon_col = scrape.stage_profile_icon(columns[1])
-                    date_col         = scrape.stage_date(columns[2])
-                    distance_col     = scrape.stage_distance(columns[3])
-
-                    #print(number_col, profile_icon_col, date_col, distance_col)
+        stage_info = scrape.stage_info_page(table)
+        print(f"Stage info for {url}:")
+        for stage_number, info in stage_info.items():
+            print(f"Stage {stage_number}:")
+            print(f"  Profile Icon: {info['profile_icon']}")
+            print(f"  Date: {info['date']}")
+            print(f"  Distance: {info['distance']}")
+    else:
+        number_col, profile_icon_col, date_col, distance_col = None, None, None, None
 
     race_id       = service.extract_id(url)
     category      = scrape.category(sidebox)
     name          = scrape.name(sidebox)
-    start_date    = '1970-01-01'
-    end_date      = '1970-01-01'
+    start_date    = '1970-01-01'  # reassign dates after if table is not None
+    end_date      = '1970-01-01'  # reassign dates after if table is not None
     logo          = scrape.logo(main_page)
     flag          = scrape.flag(sidebox)
 
@@ -133,9 +135,8 @@ def insert_races(dictionary):
                 insert_stage_race(url)
             elif key == 'one_day_races':
                 insert_one_day_race(url)
-                x = 2
-    db.insert_races(db.conn, races)
-    db.insert_stages(db.conn, stages)
+    #db.insert_races(db.conn, races)
+    #db.insert_stages(db.conn, stages)
     # print(stages)
 
 
