@@ -1,0 +1,87 @@
+/* Define the colors */
+.root {
+  -primary-color: #ffd369;
+  -secondary-color: #222831;
+  -tertiary-color: #393e46;
+  -text-color: #eeeeee;
+}
+
+/* Use a clean, standard font */
+.root {
+  -fx-font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+/* Style Buttons */
+.button {
+  -fx-background-color: -primary-color;
+  -fx-text-fill: -text-color;
+  -fx-padding: 8px 16px;
+  -fx-border-radius: 4px;
+  -fx-background-radius: 4px;
+}
+
+.button:hover {
+  -fx-background-color: -tertiary-color;
+}
+
+.button:pressed {
+  -fx-background-color: -secondary-color;
+}
+
+/* Style Textfields */
+.text-field {
+  -fx-background-color: -tertiary-color;
+  -fx-text-fill: -text-color;
+  -fx-padding: 4px 8px;
+  -fx-border-radius: 4px;
+  -fx-background-radius: 4px;
+}
+
+.text-field:focused {
+  -fx-background-color: -secondary-color;
+}
+
+/* Style Labels */
+.label {
+  -fx-text-fill: -text-color;
+}
+
+/* Additional styling for other components */
+.check-box {
+  -fx-text-fill: -text-color;
+}
+
+.radio-button {
+  -fx-text-fill: -text-color;
+}
+
+.menu-bar {
+  -fx-background-color: -secondary-color;
+}
+
+.menu-bar .label {
+  -fx-text-fill: -text-color;
+}
+
+
+/* TOGGLE CONTAINER */
+
+.toggle-container {
+    -fx-spacing: 1px;
+    -fx-padding: 4px;
+    -fx-background-color: #393e46;
+    -fx-background-radius: 14px;
+}
+
+.custom-toggle-button {
+    -fx-background-color: #393D46;
+    -fx-text-fill: #95969A;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+}
+
+.custom-toggle-button:selected {
+    -fx-text-fill: #393D46;
+    -fx-background-color: #ffd369;
+}

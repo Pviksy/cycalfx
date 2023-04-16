@@ -4,13 +4,18 @@ import com.pviksy.cycalfx.Entities.*;
 import com.pviksy.cycalfx.GUI.*;
 import com.pviksy.cycalfx.Service.Dater;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,27 +28,22 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-
         int initialMonth = Dater.getCurrentMonthNumber();
         Top top = new Top(initialMonth, this::updateCenterContent);
-
-        root.setTop(top); // switch between months here
-        root.setBottom(new Label("Bottom"));
-        root.setLeft(new Label("Left"));
-        root.setRight(new Label("Right"));
-
+        //root.setTop(top); // switch between months here
         CalendarGrid calendarGrid = new CalendarGrid();
-        root.setCenter(calendarGrid);
+        //root.setCenter(calendarGrid);
 
-        //DataAccessLayer db = new DataAccessLayer("CyCalFX23");
-        //ArrayList<Race> races = db.getRaces(1, 2023);
-        //for (Race race : races) {
-        //    System.out.println(race);
-        //}
+        TimespanController timespanController = new TimespanController();
+        SelectTimespan toggleTimespan = new SelectTimespan(timespanController);
+        AnchorPane wrapper = new AnchorPane(toggleTimespan);
+        AnchorPane.setTopAnchor(toggleTimespan, 10.0);
+        AnchorPane.setLeftAnchor(toggleTimespan, 10.0);
+        root.setCenter(wrapper);
 
-        root.setStyle("-fx-background-color: #333333;");
-        root.getStylesheets().add(getClass().getResource("/resono.css").toExternalForm());
 
+        root.setStyle("-fx-background-color: #212832;");
+        root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         Scene scene = new Scene(root, 800, 600);
         stage.setScene(scene);
         stage.setTitle("CyCalFX");
