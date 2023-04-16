@@ -1,9 +1,12 @@
-package com.pviksy.cycalfx.GUI;
+package com.pviksy.cycalfx.GUI.Timespan;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 public class SelectTimespan extends HBox {
 
@@ -13,18 +16,29 @@ public class SelectTimespan extends HBox {
 
     public SelectTimespan(TimespanSelectionListener listener) {
         this.listener = listener;
-        this.setAlignment(Pos.CENTER);
-        this.getStyleClass().add("toggle-container");
+
+        HBox container = new HBox();
+        container.setAlignment(Pos.CENTER);
+        container.getStyleClass().add("toggle-container");
 
         ToggleGroup group = new ToggleGroup();
-
         ToggleButton dayButton = createToggleButton("Day", group);
         ToggleButton weekButton = createToggleButton("Week", group);
         ToggleButton monthButton = createToggleButton("Month", group);
         ToggleButton yearButton = createToggleButton("Year", group);
 
-        this.getChildren().addAll(dayButton, weekButton, monthButton, yearButton);
+        container.getChildren().addAll(dayButton, weekButton, monthButton, yearButton);
+        getChildren().add(container);
 
+        /*
+        was wrapped in anchorpane but seemed unnecesary. forgot why it was necessary earlier
+        AnchorPane anchorPane = new AnchorPane(container);
+        AnchorPane.setTopAnchor(container, 10.0);
+        AnchorPane.setLeftAnchor(container, 10.0);
+         */
+
+        setAlignment(Pos.CENTER);
+        setPadding(new Insets(10));
     }
 
     private ToggleButton createToggleButton(String text, ToggleGroup group) {

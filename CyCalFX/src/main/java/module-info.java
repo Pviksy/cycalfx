@@ -10,4 +10,5 @@ module com.pviksy.cycalfx {
     exports com.pviksy.cycalfx;
     exports com.pviksy.cycalfx.GUI;
     exports com.pviksy.cycalfx.Entities;
+    exports com.pviksy.cycalfx.GUI.Timespan;
 }

@@ -1,25 +1,16 @@
 package com.pviksy.cycalfx;
 
-import com.pviksy.cycalfx.Entities.*;
 import com.pviksy.cycalfx.GUI.*;
+import com.pviksy.cycalfx.GUI.Timespan.*;
 import com.pviksy.cycalfx.Service.Dater;
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Main extends Application {
 
@@ -34,16 +25,13 @@ public class Main extends Application {
         CalendarGrid calendarGrid = new CalendarGrid();
         //root.setCenter(calendarGrid);
 
-        TimespanController timespanController = new TimespanController();
-        SelectTimespan toggleTimespan = new SelectTimespan(timespanController);
-        AnchorPane wrapper = new AnchorPane(toggleTimespan);
-        AnchorPane.setTopAnchor(toggleTimespan, 10.0);
-        AnchorPane.setLeftAnchor(toggleTimespan, 10.0);
-        root.setCenter(wrapper);
+        SelectTimespan toggleTimespan = new SelectTimespan(new TimespanController());
+        root.setTop(toggleTimespan);
 
 
         root.setStyle("-fx-background-color: #212832;");
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+
         Scene scene = new Scene(root, 800, 600);
         stage.setScene(scene);
         stage.setTitle("CyCalFX");

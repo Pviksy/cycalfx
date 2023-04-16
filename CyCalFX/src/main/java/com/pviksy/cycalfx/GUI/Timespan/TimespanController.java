@@ -1,4 +1,4 @@
-package com.pviksy.cycalfx.GUI;
+package com.pviksy.cycalfx.GUI.Timespan;
 
 public class TimespanController implements TimespanSelectionListener {
     @Override
