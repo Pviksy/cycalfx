@@ -1,11 +1,14 @@
 package com.pviksy.cycalfx.GUI;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Random;
 
 public class CalendarGrid extends GridPane {
@@ -17,28 +20,72 @@ public class CalendarGrid extends GridPane {
 
      */
 
+    private LocalDate today = LocalDate.now(); //.plusMonths(1);
+
     public CalendarGrid() {
-        Random rnd = new Random();
+        setGridLinesVisible(true);
+        setHgap(10);
+        setVgap(10);
 
-        int numRows = 6;
-        int numCols = 7;
+        int dayOfMonth = today.getDayOfMonth();
+        int monthLength = today.lengthOfMonth();
+        LocalDate firstDayOfMonth = today.minusDays(dayOfMonth - 1);
+        LocalDate lastDayOfMonth = firstDayOfMonth.plusDays(monthLength - 1);
+        System.out.println(firstDayOfMonth);
+        System.out.println(lastDayOfMonth);
 
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                StackPane cell = new StackPane();
-                cell.setPrefSize(75, 75);
 
-                // Generate a random color for the cell
-                Color color = Color.rgb(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                Rectangle rect = new Rectangle(75, 75, color);
-                cell.getChildren().add(rect);
+        // find first day of the given month to show
+        LocalDate firstMondayOfCalendar;
+        if (firstDayOfMonth.getDayOfWeek() != DayOfWeek.MONDAY) {
+            firstMondayOfCalendar = firstDayOfMonth.minusDays(firstDayOfMonth.getDayOfWeek().getValue() - 1);
+        } else {
+            firstMondayOfCalendar = firstDayOfMonth;
+        }
+        System.out.println(firstMondayOfCalendar);
 
-                // Add the cell to the grid pane
-                add(cell, col, row);
+
+        // find last day to show
+        LocalDate lastSundayOfCalendar = firstDayOfMonth.plusMonths(1);
+        if (lastSundayOfCalendar.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            lastSundayOfCalendar = lastSundayOfCalendar.plusDays(7 - lastSundayOfCalendar.getDayOfWeek().getValue());
+        }
+        System.out.println(lastSundayOfCalendar);
+
+
+        int daysInCalendar = lastSundayOfCalendar.getDayOfYear() - firstMondayOfCalendar.getDayOfYear() + 1;
+        System.out.println(daysInCalendar);
+
+        int weeksToDisplay = daysInCalendar / 7;
+        System.out.println(weeksToDisplay);
+
+        int number = 0;
+        int initialDay = firstMondayOfCalendar.getDayOfMonth();
+        System.out.println(initialDay);
+        for (int weeks = 0; weeks < weeksToDisplay + 1; weeks++) { // could be either 4, 5 or 6 depending on where days land in the weeks
+            for (int days = 0; days < 7; days++) {
+                if (weeks == 0) {
+                    Label dayLabel = new Label();
+                    switch (days) {
+                        case 0 -> dayLabel.setText("Mon");
+                        case 1 -> dayLabel.setText("Tue");
+                        case 2 -> dayLabel.setText("Wed");
+                        case 3 -> dayLabel.setText("Thu");
+                        case 4 -> dayLabel.setText("Fri");
+                        case 5 -> dayLabel.setText("Sat");
+                        case 6 -> dayLabel.setText("Sun");
+                    }
+                    add(dayLabel, days, weeks);
+                } else {
+                    Label date = new Label(Integer.toString(number));
+                    add(date, days, weeks);
+
+                    number++;
+                }
             }
         }
 
-        this.setAlignment(Pos.TOP_CENTER);
+        this.setAlignment(Pos.CENTER);
     }
 
 }

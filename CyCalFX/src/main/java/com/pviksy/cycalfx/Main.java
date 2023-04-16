@@ -6,6 +6,7 @@ import com.pviksy.cycalfx.Service.Dater;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -22,19 +23,21 @@ public class Main extends Application {
         int initialMonth = Dater.getCurrentMonthNumber();
         Top top = new Top(initialMonth, this::updateCenterContent);
         //root.setTop(top); // switch between months here
-        CalendarGrid calendarGrid = new CalendarGrid();
-        //root.setCenter(calendarGrid);
 
         SelectTimespan toggleTimespan = new SelectTimespan(new TimespanController());
         root.setTop(toggleTimespan);
 
+        CalendarGrid calendarGrid = new CalendarGrid();
+        root.setCenter(calendarGrid);
 
         root.setStyle("-fx-background-color: #212832;");
         root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         Scene scene = new Scene(root, 800, 600);
+
         stage.setScene(scene);
         stage.setTitle("CyCalFX");
+        stage.getIcons().add(new Image("file:src/main/resources/media/calendar.png"));
         stage.show();
     }
 
