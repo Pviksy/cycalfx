@@ -18,7 +18,7 @@ public class TimespanController implements SelectTimespan.TimespanSelectionListe
         switch (timespan) {
             case DAY -> main.updateCenterContent(new Label("Day"));
             case WEEK -> main.updateCenterContent(new Label("Week"));
-            case MONTH -> main.updateCenterContent(new Label("Month"));
+            case MONTH -> main.updateCenterContent(main.getMonthView());
             case YEAR -> main.updateCenterContent(new Label("Year"));
             default -> System.out.println("Invalid selection");
         }

@@ -1,5 +1,133 @@
 package com.pviksy.cycalfx.GUI.Calendar;
 
-public class MonthView {
+import com.pviksy.cycalfx.Entities.Race;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MonthView extends GridPane {
+
+    /*
+    In the constructor, it can be determined how many weeks etc the grid
+    should be able to contain. This can depend on the information retrieved
+    from the database, or be more static.
+     */
+
+    private LocalDate date = LocalDate.now(); //.plusMonths(1);
+
+    private final ArrayList<Race> races;
+
+    public MonthView(ArrayList<Race> races) {
+        this.races = races;
+
+        updateContent(races);
+
+        setHgap(10);
+        setVgap(10);
+        this.setAlignment(Pos.TOP_CENTER);
+    }
+
+    private void updateContent(ArrayList<Race> races) {
+
+        getChildren().clear();
+
+        int dayOfMonth = date.getDayOfMonth();
+        int monthLength = date.lengthOfMonth();
+        LocalDate firstDayOfMonth = date.minusDays(dayOfMonth - 1);
+        LocalDate lastDayOfMonth = firstDayOfMonth.plusDays(monthLength - 1);
+        System.out.println("      firstDayOfMonth: " + firstDayOfMonth);
+        System.out.println("       lastDayOfMonth: " + lastDayOfMonth);
+
+
+        // find first day of the given month to show
+        LocalDate firstMondayOfCalendar;
+        if (firstDayOfMonth.getDayOfWeek() != DayOfWeek.MONDAY) {
+            firstMondayOfCalendar = firstDayOfMonth.minusDays(firstDayOfMonth.getDayOfWeek().getValue() - 1);
+        } else {
+            firstMondayOfCalendar = firstDayOfMonth;
+        }
+        System.out.println("firstMondayOfCalendar: " + firstMondayOfCalendar);
+
+
+        // find last day to show
+        LocalDate lastSundayOfCalendar = firstDayOfMonth.plusMonths(1);
+        if (lastSundayOfCalendar.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            lastSundayOfCalendar = lastSundayOfCalendar.plusDays(7 - lastSundayOfCalendar.getDayOfWeek().getValue());
+        }
+        System.out.println(" lastSundayOfCalendar: " + lastSundayOfCalendar);
+
+        int daysInCalendar = (int) ChronoUnit.DAYS.between(firstMondayOfCalendar, lastSundayOfCalendar) + 1; // fixes problem occuring when changing between years
+        System.out.println("       daysInCalendar: " + daysInCalendar);
+
+        int weeksToDisplay = daysInCalendar / 7;
+        System.out.println("       weeksToDisplay: " + weeksToDisplay);
+
+        LocalDate dateIterator = firstMondayOfCalendar;
+
+        for (int weeks = 0; weeks < weeksToDisplay + 1; weeks++) { // could be either 4, 5 or 6 depending on where days land in the weeks
+            for (int days = 0; days < 7; days++) {
+                int CELL_WIDTH = 130;
+                int CELL_HEIGHT = 60;
+                if (weeks == 0) {
+                    Label dayLabel = new Label();
+                    switch (days) {
+                        case 0 -> dayLabel.setText("Mon");
+                        case 1 -> dayLabel.setText("Tue");
+                        case 2 -> dayLabel.setText("Wed");
+                        case 3 -> dayLabel.setText("Thu");
+                        case 4 -> dayLabel.setText("Fri");
+                        case 5 -> dayLabel.setText("Sat");
+                        case 6 -> dayLabel.setText("Sun");
+                    }
+                    add(dayLabel, days, weeks);
+                    dayLabel.setPrefSize(CELL_WIDTH, 30); // Set the preferred width and height
+                    dayLabel.setAlignment(Pos.CENTER); // Center the text within the label
+                    dayLabel.getStyleClass().add("calendar-cell");
+                } else {
+                    Label date = new Label(Integer.toString(dateIterator.getDayOfMonth()));
+                    date.setAlignment(Pos.CENTER); // Center the text within the label
+
+                    LocalDate finalDateIterator = dateIterator;
+                    List<Race> filteredRaces = races.stream()
+                            .filter(race -> {
+                                LocalDate startDateLocalDate = race.getStartDate().toLocalDate();
+                                return startDateLocalDate.equals(finalDateIterator);
+                            })
+                            .toList();
+
+
+                    VBox container = new VBox();
+                    container.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
+                    container.getChildren().addAll(date, new MonthDayContainer(date, filteredRaces));
+                    container.getStyleClass().add("calendar-cell");
+                    container.setAlignment(Pos.TOP_CENTER); // Center the components within the VBox
+
+                    add(container, days, weeks);
+                    dateIterator = dateIterator.plusDays(1);
+                }
+            }
+        }
+    }
+
+    public void incrementMonth() {
+        date = date.plusMonths(1);
+        updateContent(races);
+
+        System.out.println(date);
+    }
+
+    public void decrementMonth() {
+        date = date.minusMonths(1);
+        updateContent(races);
+
+        System.out.println(date);
+    }
 
 }

@@ -85,3 +85,12 @@
     -fx-text-fill: #393D46;
     -fx-background-color: #ffd369;
 }
+
+
+.calendar-cell {
+    -fx-background-color: #393D46;
+    -fx-text-fill: #95969A;
+    -fx-padding: 5px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+}

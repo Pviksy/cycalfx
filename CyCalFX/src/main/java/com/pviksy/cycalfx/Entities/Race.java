@@ -10,17 +10,19 @@ public class Race {
     private java.sql.Date startDate;
     private java.sql.Date endDate;
     private String logo;
+    private String flag;
     private double distance;
     private String profileIcon;
     private String profile;
 
-    public Race(int id, String category_id, String name, Date startDate, Date endDate, String logo, double distance, String profileIcon, String profile) {
+    public Race(int id, String category_id, String name, Date startDate, Date endDate, String logo, String flag, double distance, String profileIcon, String profile) {
         this.id = id;
         this.category_id = category_id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.logo = logo;
+        this.flag = flag;
         this.distance = distance;
         this.profileIcon = profileIcon;
         this.profile = profile;
@@ -72,6 +74,14 @@ public class Race {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 
     public double getDistance() {

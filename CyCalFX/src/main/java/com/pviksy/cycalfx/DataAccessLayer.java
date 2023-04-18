@@ -60,7 +60,7 @@ public class DataAccessLayer {
                 String profileIcon = resultSet.getString("profile_icon");
                 String profile = resultSet.getString("profile");
 
-                races.add(new Race(id, category_id, name, startDate, endDate, logo, distance, profileIcon, profile));
+                races.add(new Race(id, category_id, name, startDate, endDate, logo, flag, distance, profileIcon, profile));
             }
 
             return races;
@@ -73,4 +73,38 @@ public class DataAccessLayer {
         }
     }
 
+    public ArrayList<Race> getOneDayRaces() {
+        try {
+            ArrayList<Race> races = new ArrayList<>();
+
+            String sql = "SELECT * FROM [race] WHERE [start_date] > '2022-01-01' ORDER BY [start_date]";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String category_id = resultSet.getString("category_id");
+                String name = resultSet.getString("name");
+                java.sql.Date startDate = resultSet.getDate("start_date");
+                java.sql.Date endDate = resultSet.getDate("end_date");
+                String logo = resultSet.getString("logo");
+                String flag = resultSet.getString("flag");
+                double distance = resultSet.getDouble("distance");
+                String profileIcon = resultSet.getString("profile_icon");
+                String profile = resultSet.getString("profile");
+
+                races.add(new Race(id, category_id, name, startDate, endDate, logo, flag, distance, profileIcon, profile));
+            }
+
+            return races;
+        }
+        catch (SQLException e) {
+            System.out.println("Error: could not get races.");
+            System.out.println(e.getMessage());
+
+            return null;
+        }
+    }
 }
