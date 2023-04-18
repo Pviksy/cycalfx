@@ -1,4 +1,4 @@
-package com.pviksy.cycalfx.GUI;
+package com.pviksy.cycalfx.GUI.Calendar;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

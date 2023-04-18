@@ -1,30 +1,28 @@
 package com.pviksy.cycalfx;
 
 import com.pviksy.cycalfx.GUI.*;
+import com.pviksy.cycalfx.GUI.Calendar.CalendarGrid;
 import com.pviksy.cycalfx.GUI.Timespan.*;
 import com.pviksy.cycalfx.Service.Dater;
 import javafx.application.Application;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class Main extends Application {
 
-    BorderPane root = new BorderPane();
+    private final BorderPane root = new BorderPane();
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
         int initialMonth = Dater.getCurrentMonthNumber();
         Top top = new Top(initialMonth, this::updateCenterContent);
         //root.setTop(top); // switch between months here
 
-        SelectTimespan toggleTimespan = new SelectTimespan(new TimespanController());
+        SelectTimespan toggleTimespan = new SelectTimespan(new TimespanController(this));
         root.setTop(toggleTimespan);
 
         CalendarGrid calendarGrid = new CalendarGrid();
@@ -45,6 +43,10 @@ public class Main extends Application {
         CalendarGrid calendarGrid = new CalendarGrid();
 
         root.setCenter(calendarGrid); // grid of the new month
+    }
+
+    public void updateCenterContent(Node node) {
+        root.setCenter(node);
     }
 
     public static void main(String[] args) {

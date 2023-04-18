@@ -4,15 +4,17 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 
 public class SelectTimespan extends HBox {
 
-    // note: its possible to untoggle the button by pressing it when its highlighted
+    // note: it is possible to untoggle the button by pressing it when its highlighted
 
-    private TimespanSelectionListener listener;
+    private final TimespanSelectionListener listener;
+
+    protected interface TimespanSelectionListener {
+        void onTimespanSelected(Timespan timespan);
+    }
 
     public SelectTimespan(TimespanSelectionListener listener) {
         this.listener = listener;
@@ -30,13 +32,6 @@ public class SelectTimespan extends HBox {
         container.getChildren().addAll(dayButton, weekButton, monthButton, yearButton);
         getChildren().add(container);
 
-        /*
-        was wrapped in anchorpane but seemed unnecesary. forgot why it was necessary earlier
-        AnchorPane anchorPane = new AnchorPane(container);
-        AnchorPane.setTopAnchor(container, 10.0);
-        AnchorPane.setLeftAnchor(container, 10.0);
-         */
-
         setAlignment(Pos.CENTER);
         setPadding(new Insets(10));
     }
@@ -48,7 +43,7 @@ public class SelectTimespan extends HBox {
 
         button.selectedProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
-                listener.onTimespanSelected(text);
+                listener.onTimespanSelected(Timespan.valueOf(text.toUpperCase()));
             }
         });
 

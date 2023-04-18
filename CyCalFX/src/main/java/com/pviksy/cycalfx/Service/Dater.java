@@ -12,6 +12,8 @@ public class Dater {
         return currentDate.getMonthValue();
     }
 
+
+    // this belongs to Top - it was for testing switching between months
     public static String getMonthName(int month) {
         // Assuming the year doesn't matter for getting the month name, so we use a fixed year (e.g., 2021)
         LocalDate dateWithGivenMonth = LocalDate.of(2021, month, 1);
