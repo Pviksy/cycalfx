@@ -3,13 +3,9 @@ package com.pviksy.cycalfx.GUI.Calendar;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Random;
+import java.time.temporal.ChronoUnit;
 
 public class CalendarGrid extends GridPane {
 
@@ -17,22 +13,29 @@ public class CalendarGrid extends GridPane {
     In the constructor, it can be determined how many weeks etc the grid
     should be able to contain. This can depend on the information retrieved
     from the database, or be more static.
-
      */
 
-    private LocalDate today = LocalDate.now(); //.plusMonths(1);
+    private LocalDate date = LocalDate.now(); //.plusMonths(1);
 
     public CalendarGrid() {
         setGridLinesVisible(true);
         setHgap(10);
         setVgap(10);
+        updateContent();
 
-        int dayOfMonth = today.getDayOfMonth();
-        int monthLength = today.lengthOfMonth();
-        LocalDate firstDayOfMonth = today.minusDays(dayOfMonth - 1);
+
+        this.setAlignment(Pos.CENTER);
+    }
+
+    private void updateContent() {
+        getChildren().clear();
+
+        int dayOfMonth = date.getDayOfMonth();
+        int monthLength = date.lengthOfMonth();
+        LocalDate firstDayOfMonth = date.minusDays(dayOfMonth - 1);
         LocalDate lastDayOfMonth = firstDayOfMonth.plusDays(monthLength - 1);
-        System.out.println(firstDayOfMonth);
-        System.out.println(lastDayOfMonth);
+        System.out.println("      firstDayOfMonth: " + firstDayOfMonth);
+        System.out.println("       lastDayOfMonth: " + lastDayOfMonth);
 
 
         // find first day of the given month to show
@@ -42,7 +45,7 @@ public class CalendarGrid extends GridPane {
         } else {
             firstMondayOfCalendar = firstDayOfMonth;
         }
-        System.out.println(firstMondayOfCalendar);
+        System.out.println("firstMondayOfCalendar: " + firstMondayOfCalendar);
 
 
         // find last day to show
@@ -50,18 +53,18 @@ public class CalendarGrid extends GridPane {
         if (lastSundayOfCalendar.getDayOfWeek() != DayOfWeek.SUNDAY) {
             lastSundayOfCalendar = lastSundayOfCalendar.plusDays(7 - lastSundayOfCalendar.getDayOfWeek().getValue());
         }
-        System.out.println(lastSundayOfCalendar);
+        System.out.println(" lastSundayOfCalendar: " + lastSundayOfCalendar);
 
 
-        int daysInCalendar = lastSundayOfCalendar.getDayOfYear() - firstMondayOfCalendar.getDayOfYear() + 1;
-        System.out.println(daysInCalendar);
+        //int daysInCalendar = lastSundayOfCalendar.getDayOfYear() - firstMondayOfCalendar.getDayOfYear() + 1; // tutorial guy did not +1 but it didnt fit, so I did
+        int daysInCalendar = (int) ChronoUnit.DAYS.between(firstMondayOfCalendar, lastSundayOfCalendar) + 1; // fixes problem occuring when changing between years
+        System.out.println("       daysInCalendar: " + daysInCalendar);
 
         int weeksToDisplay = daysInCalendar / 7;
-        System.out.println(weeksToDisplay);
+        System.out.println("       weeksToDisplay: " + weeksToDisplay);
 
-        int number = 0;
-        int initialDay = firstMondayOfCalendar.getDayOfMonth();
-        System.out.println(initialDay);
+        LocalDate dateIterator = firstMondayOfCalendar;
+
         for (int weeks = 0; weeks < weeksToDisplay + 1; weeks++) { // could be either 4, 5 or 6 depending on where days land in the weeks
             for (int days = 0; days < 7; days++) {
                 if (weeks == 0) {
@@ -77,15 +80,28 @@ public class CalendarGrid extends GridPane {
                     }
                     add(dayLabel, days, weeks);
                 } else {
-                    Label date = new Label(Integer.toString(number));
-                    add(date, days, weeks);
+                    Label date = new Label();
+                    date.setText(Integer.toString(dateIterator.getDayOfMonth()));
 
-                    number++;
+                    add(date, days, weeks);
+                    dateIterator = dateIterator.plusDays(1);
                 }
             }
         }
+    }
 
-        this.setAlignment(Pos.CENTER);
+    public void incrementMonth() {
+        date = date.plusMonths(1);
+        updateContent();
+
+        System.out.println(date);
+    }
+
+    public void decrementMonth() {
+        date = date.minusMonths(1);
+        updateContent();
+
+        System.out.println(date);
     }
 
 }

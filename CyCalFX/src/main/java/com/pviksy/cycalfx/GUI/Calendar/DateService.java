@@ -1,10 +1,10 @@
-package com.pviksy.cycalfx.Service;
+package com.pviksy.cycalfx.GUI.Calendar;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-public class Dater {
+public class DateService {
 
     public static int getCurrentMonthNumber() {
         LocalDate currentDate = LocalDate.now();
