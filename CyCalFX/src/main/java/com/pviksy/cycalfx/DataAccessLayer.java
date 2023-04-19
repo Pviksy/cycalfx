@@ -1,22 +1,28 @@
 package com.pviksy.cycalfx;
 
 import com.pviksy.cycalfx.Entities.Race;
+import com.pviksy.cycalfx.Service.ImageCache;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DataAccessLayer {
 
-    Connection connection = null;
+    private Connection connection;
 
     public DataAccessLayer(String dbName) {
         openConnection(dbName);
     }
 
     private void openConnection(String databaseName) {
-        String connectionString = "jdbc:jtds:sqlserver://localhost:1433/" + databaseName + ";instance=SQLEXPRESS;integratedSecurity=true";
+
+        String connectionString = "jdbc:jtds:sqlserver://localhost:1433/" + databaseName + ";integratedSecurity=true";
 
         try {
             System.out.println("Connecting to database...");
@@ -102,6 +108,37 @@ public class DataAccessLayer {
         }
         catch (SQLException e) {
             System.out.println("Error: could not get races.");
+            System.out.println(e.getMessage());
+
+            return null;
+        }
+    }
+
+    public ImageCache loadImageCache() {
+        try {
+            ImageCache imageCache = new ImageCache();
+
+            String sql = "SELECT logo, flag, profile_icon, profile FROM [race] WHERE [start_date] > '2022-01-01' ORDER BY [start_date]";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String logo = resultSet.getString("logo");
+                String flag = resultSet.getString("flag");
+                String profileIcon = resultSet.getString("profile_icon");
+                String profile = resultSet.getString("profile");
+
+                List<String> urls = Arrays.asList(logo, flag, "https://firstcycling.com/" + profileIcon, profile);
+                urls = urls.stream().filter(Objects::nonNull).collect(Collectors.toList());
+                imageCache.addAll(urls);
+            }
+
+            return imageCache;
+        }
+        catch (SQLException e) {
+            System.out.println("Error: could not get imageURLs.");
             System.out.println(e.getMessage());
 
             return null;

@@ -1,18 +1,19 @@
 package com.pviksy.cycalfx.GUI.Calendar;
 
+import com.pviksy.cycalfx.Main;
 import com.pviksy.cycalfx.Entities.Race;
+import com.pviksy.cycalfx.Service.ImageCache;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MonthDayContainer extends VBox {
 
-    public MonthDayContainer(Label day, List<Race> races) {
+    public MonthDayContainer(Label day, List<Race> races, Main main) {
 
         VBox allRacesToday = new VBox();
 
@@ -20,27 +21,44 @@ public class MonthDayContainer extends VBox {
             VBox raceInfoContainer = new VBox();
             raceInfoContainer.setSpacing(5);
 
-            HBox rowOne = new HBox();
-            rowOne.setSpacing(5);
-
             ImageView flag = new ImageView();
+            String flagImageURL = race.getFlag();
+            Image flagImage = main.getImageCache().getImage(flagImageURL);
+            flag.setImage(flagImage);
             flag.setFitHeight(16);
             flag.setPreserveRatio(true);
-            flag.setImage(new Image(race.getFlag()));
 
             Label category = new Label(race.getCategory_id());
-            Label name = new Label(race.getName());
 
-            ImageView logo = new ImageView();
-            if (race.getLogo() != null) {
-                Image logoImage = new Image(race.getLogo());
-                logo.setImage(logoImage);
-                logo.setFitWidth(120);
-                logo.setPreserveRatio(true);
+            HBox rowOne = new HBox();
+            rowOne.setSpacing(5);
+            rowOne.getChildren().addAll(flag, category);
+
+
+            ImageView profileIcon = new ImageView();
+            if (race.getProfileIcon() != null) {
+                String profileIconImageURL = "https://firstcycling.com/" + race.getProfileIcon();
+                Image profileIconImage = main.getImageCache().getImage(profileIconImageURL);
+                profileIcon.setImage(profileIconImage);
+                profileIcon.setFitHeight(14);
+                profileIcon.setPreserveRatio(true);
             }
 
-            rowOne.getChildren().addAll(flag, category);
-            raceInfoContainer.getChildren().addAll(rowOne, name, logo);
+            Label distance = new Label();
+            if (race.getDistance() != 0) {
+                String distanceContent = race.getDistance() + " km";
+                distance.setText(distanceContent);
+            }
+
+            HBox rowTwo = new HBox();
+            rowTwo.setSpacing(5);
+            HBox.setMargin(profileIcon, new Insets(1, 0, 0, 1));
+            rowTwo.getChildren().addAll(profileIcon, distance);
+
+
+            Label name = new Label(race.getName());
+
+            raceInfoContainer.getChildren().addAll(rowOne, name, rowTwo);
             allRacesToday.getChildren().add(raceInfoContainer);
         }
 

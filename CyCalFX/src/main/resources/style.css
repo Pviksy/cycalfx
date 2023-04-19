@@ -6,15 +6,35 @@
   -text-color: #eeeeee;
 }
 
-/* Use a clean, standard font */
 .root {
   -fx-font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.drop-shadow {
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 2);
+}
+
+.drop-shadow:hover {
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 8, 0.0, 0, 4);
+}
+
+/* Add the drop-shadow class to your existing selectors */
+.button, .text-field, .check-box, .radio-button, .menu-bar, .calendar-cell {
+  -fx-text-fill: -text-color;
+  -fx-padding: 8px 16px;
+  -fx-border-radius: 4px;
+  -fx-background-radius: 4px;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 2);
+}
+
+.button:hover, .text-field:hover, .check-box:hover, .radio-button:hover, .menu-bar:hover {
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 8, 0.0, 0, 4);
 }
 
 /* Style Buttons */
 .button {
   -fx-background-color: -primary-color;
-  -fx-text-fill: -text-color;
+  -fx-text-fill: -secondary-color;
   -fx-padding: 8px 16px;
   -fx-border-radius: 4px;
   -fx-background-radius: 4px;
@@ -22,6 +42,7 @@
 
 .button:hover {
   -fx-background-color: -tertiary-color;
+  -fx-text-fill: #95969A;
 }
 
 .button:pressed {
@@ -31,7 +52,7 @@
 /* Style Textfields */
 .text-field {
   -fx-background-color: -tertiary-color;
-  -fx-text-fill: -text-color;
+  -fx-text-fill: -secondary-color;
   -fx-padding: 4px 8px;
   -fx-border-radius: 4px;
   -fx-background-radius: 4px;
@@ -45,24 +66,6 @@
 .label {
   -fx-text-fill: -text-color;
 }
-
-/* Additional styling for other components */
-.check-box {
-  -fx-text-fill: -text-color;
-}
-
-.radio-button {
-  -fx-text-fill: -text-color;
-}
-
-.menu-bar {
-  -fx-background-color: -secondary-color;
-}
-
-.menu-bar .label {
-  -fx-text-fill: -text-color;
-}
-
 
 /* TOGGLE CONTAINER */
 
@@ -86,11 +89,18 @@
     -fx-background-color: #ffd369;
 }
 
-
 .calendar-cell {
     -fx-background-color: #393D46;
     -fx-text-fill: #95969A;
     -fx-padding: 5px;
     -fx-border-radius: 12px;
     -fx-background-radius: 12px;
+}
+
+.calendar-cell Label {
+    -fx-text-fill: #95969A;
+}
+
+.month-day-container Label {
+    -fx-text-fill: -text-color;
 }

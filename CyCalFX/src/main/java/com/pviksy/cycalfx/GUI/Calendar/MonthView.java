@@ -1,6 +1,7 @@
 package com.pviksy.cycalfx.GUI.Calendar;
 
 import com.pviksy.cycalfx.Entities.Race;
+import com.pviksy.cycalfx.Main;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -21,13 +22,12 @@ public class MonthView extends GridPane {
      */
 
     private LocalDate date = LocalDate.now(); //.plusMonths(1);
+    private final Main main;
 
-    private final ArrayList<Race> races;
+    public MonthView(Main main) {
+        this.main = main;
 
-    public MonthView(ArrayList<Race> races) {
-        this.races = races;
-
-        updateContent(races);
+        updateContent(main.getRaces());
 
         setHgap(10);
         setVgap(10);
@@ -73,8 +73,8 @@ public class MonthView extends GridPane {
 
         for (int weeks = 0; weeks < weeksToDisplay + 1; weeks++) { // could be either 4, 5 or 6 depending on where days land in the weeks
             for (int days = 0; days < 7; days++) {
-                int CELL_WIDTH = 130;
-                int CELL_HEIGHT = 60;
+                int CELL_WIDTH = 150;
+                int CELL_HEIGHT = 30;
                 if (weeks == 0) {
                     Label dayLabel = new Label();
                     switch (days) {
@@ -92,7 +92,7 @@ public class MonthView extends GridPane {
                     dayLabel.getStyleClass().add("calendar-cell");
                 } else {
                     Label date = new Label(Integer.toString(dateIterator.getDayOfMonth()));
-                    date.setAlignment(Pos.CENTER); // Center the text within the label
+                    //date.setAlignment(Pos.CENTER); // Center the text within the label
 
                     LocalDate finalDateIterator = dateIterator;
                     List<Race> filteredRaces = races.stream()
@@ -103,9 +103,13 @@ public class MonthView extends GridPane {
                             .toList();
 
 
+                    MonthDayContainer monthDayContainer = new MonthDayContainer(date, filteredRaces, main);
+                    monthDayContainer.getStyleClass().add("month-day-container");
+
                     VBox container = new VBox();
                     container.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
-                    container.getChildren().addAll(date, new MonthDayContainer(date, filteredRaces));
+                    container.getStyleClass().add("calendar-cell");
+                    container.getChildren().addAll(date, monthDayContainer);
                     container.getStyleClass().add("calendar-cell");
                     container.setAlignment(Pos.TOP_CENTER); // Center the components within the VBox
 
@@ -118,14 +122,14 @@ public class MonthView extends GridPane {
 
     public void incrementMonth() {
         date = date.plusMonths(1);
-        updateContent(races);
+        updateContent(main.getRaces());
 
         System.out.println(date);
     }
 
     public void decrementMonth() {
         date = date.minusMonths(1);
-        updateContent(races);
+        updateContent(main.getRaces());
 
         System.out.println(date);
     }
