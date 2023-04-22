@@ -73,7 +73,7 @@ public class MonthView extends GridPane {
 
         for (int weeks = 0; weeks < weeksToDisplay + 1; weeks++) { // could be either 4, 5 or 6 depending on where days land in the weeks
             for (int days = 0; days < 7; days++) {
-                int CELL_WIDTH = 150;
+                int CELL_WIDTH = 175;
                 int CELL_HEIGHT = 30;
                 if (weeks == 0) {
                     Label dayLabel = new Label();

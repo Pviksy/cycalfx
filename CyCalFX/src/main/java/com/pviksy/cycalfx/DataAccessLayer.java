@@ -79,11 +79,20 @@ public class DataAccessLayer {
         }
     }
 
+    public ArrayList<Race> getAllRaces() {
+        ArrayList<Race> races = new ArrayList<>();
+        races.addAll(getOneDayRaces());
+        races.addAll(getStages());
+
+        return races;
+    }
+
     public ArrayList<Race> getOneDayRaces() {
         try {
             ArrayList<Race> races = new ArrayList<>();
 
-            String sql = "SELECT * FROM [race] WHERE [start_date] > '2022-01-01' ORDER BY [start_date]";
+            String sql = "SELECT * FROM [race] JOIN [category] ON [race].category_id = [category].id " +
+                         "WHERE [start_date] = [end_date] ORDER BY [category].priority, [start_date]";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -108,6 +117,53 @@ public class DataAccessLayer {
         }
         catch (SQLException e) {
             System.out.println("Error: could not get races.");
+            System.out.println(e.getMessage());
+
+            return null;
+        }
+    }
+
+    public ArrayList<Race> getStages() {
+        try {
+            ArrayList<Race> races = new ArrayList<>();
+
+            String sql = "SELECT [stage].id,\n" +
+                    "       [race].category_id,\n" +
+                    "       [race].name,\n" +
+                    "       [stage].number,\n" +
+                    "       [stage].[date],\n" +
+                    "       [race].logo, [race].flag,\n" +
+                    "       [stage].distance,\n" +
+                    "       [stage].profile_icon,\n" +
+                    "       [stage].profile\n" +
+                    "FROM [stage]\n" +
+                    "JOIN [race] ON [stage].race_id = [race].id\n" +
+                    "JOIN [category] ON [race].category_id = [category].id\n" +
+                    "ORDER BY category.priority, [name], [stage].[number]";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String category_id = resultSet.getString("category_id");
+                String name = resultSet.getString("name");
+                int number = resultSet.getInt("number");
+                java.sql.Date date = resultSet.getDate("date");
+                String logo = resultSet.getString("logo");
+                String flag = resultSet.getString("flag");
+                double distance = resultSet.getDouble("distance");
+                String profileIcon = resultSet.getString("profile_icon");
+                String profile = resultSet.getString("profile");
+
+                races.add(new Race(id, category_id, name + "\nStage " + number, date, date, logo, flag, distance, profileIcon, profile));
+            }
+
+            return races;
+        }
+        catch (SQLException e) {
+            System.out.println("Error: could not get stages.");
             System.out.println(e.getMessage());
 
             return null;

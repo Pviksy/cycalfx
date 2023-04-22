@@ -16,10 +16,12 @@ public class MonthDayContainer extends VBox {
     public MonthDayContainer(Label day, List<Race> races, Main main) {
 
         VBox allRacesToday = new VBox();
+        allRacesToday.setSpacing(10);
 
         for (Race race : races) {
             VBox raceInfoContainer = new VBox();
-            raceInfoContainer.setSpacing(5);
+            raceInfoContainer.setSpacing(1);
+            //raceInfoContainer.setStyle("-fx-background-color: #222831;");
 
             ImageView flag = new ImageView();
             String flagImageURL = race.getFlag();

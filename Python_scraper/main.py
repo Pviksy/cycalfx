@@ -2,9 +2,8 @@ import db
 import scrape
 import service
 
-year = 2023
 
-url_template = f"https://firstcycling.com/race.php?y={year}&t=2&m="
+url_template = f"https://firstcycling.com/race.php?y={service.year}&t=2&m="
 
 
 def get_race_urls(starting_month, ending_month):
@@ -37,7 +36,7 @@ def get_race_urls(starting_month, ending_month):
                     race_col = columns[2].find('a')['href']
 
                 if cat_col in categories:
-                    race_url = service.normalize_url(f'https://firstcycling.com/{race_col}', str(year))
+                    race_url = service.normalize_url(f'https://firstcycling.com/{race_col}', str(service.year))
 
                     if cat_col[0] == '2':  # if first character of category is 2
                         # stage race
@@ -48,9 +47,7 @@ def get_race_urls(starting_month, ending_month):
     return race_urls
 
 
-race_urls = get_race_urls(5, 5)
-
-
+race_urls = get_race_urls(1, 12)
 
 races = []
 stages = []
@@ -68,44 +65,31 @@ def insert_stage_race(url):
 
     # set dates before, incase table is None
 
-    table = info_page.find('table', class_='tablesorter')
-
-    stage_info = {}
-
-    if table is not None:
-        stage_info = scrape.stage_info_page(table)
-        print(f"Stage info for {url}:")
-        for stage_number, info in stage_info.items():
-            print(f"Stage {stage_number}:")
-            print(f"  Profile Icon: {info['profile_icon']}")
-            print(f"  Date: {info['date']}")
-            print(f"  Distance: {info['distance']}")
-    else:
-        number_col, profile_icon_col, date_col, distance_col = None, None, None, None
-
-    race_id       = service.extract_id(url)
-    category      = scrape.category(sidebox)
-    name          = scrape.name(sidebox)
-    start_date    = '1970-01-01'  # reassign dates after if table is not None
-    end_date      = '1970-01-01'  # reassign dates after if table is not None
-    logo          = scrape.logo(main_page)
-    flag          = scrape.flag(sidebox)
+    race_id              = service.extract_id(url)
+    category             = scrape.category(sidebox)
+    name                 = scrape.name(sidebox)
+    start_date, end_date = scrape.start_end_dates(sidebox)  # gets initial value from sidebox
+    logo                 = scrape.logo(main_page)
+    flag                 = scrape.flag(sidebox)
 
     race = (race_id, category, name, start_date, end_date, logo, flag, None, None, None)
-
     races.append(race)
 
-    for s in race:
-        stage_id     = None
-        # race_id    = /\
-        number       = None
-        date         = None
-        distance     = None
-        profile_icon = None
-        profile      = None
+    stage_info_table = info_page.find('table', class_='tablesorter')
 
-        stage = (stage_id, race_id, number, date, distance, profile_icon, profile)
-        stages.append(stage)
+    if service.table_is_valid(stage_info_table.text):
+        stage_info = scrape.stage_info_page(stage_info_table)
+
+        for stage_number, info in stage_info.items():
+            stage = (race_id, stage_number, info['date'], info['distance'], info['profile_icon'], None)
+            stages.append(stage)
+    else:
+        date_map = service.map_dates(start_date, end_date)
+        for stage_number in range(min(date_map), max(date_map) + 1):
+            stage = (race_id, stage_number, date_map.get(stage_number), None, None, None)
+            stages.append(stage)
+
+    print(start_date, end_date, name)
 
 
 def insert_one_day_race(url):
@@ -134,10 +118,11 @@ def insert_races(dictionary):
             if key == 'stage_races':
                 insert_stage_race(url)
             elif key == 'one_day_races':
-                insert_one_day_race(url)
-    #db.insert_races(db.conn, races)
-    #db.insert_stages(db.conn, stages)
-    # print(stages)
+                #insert_one_day_race(url)
+                pass
+    db.insert_races(db.conn, races)
+    db.insert_stages(db.conn, stages)
+    print(stages)
 
 
 insert_races(race_urls)

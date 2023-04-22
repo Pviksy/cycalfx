@@ -33,7 +33,7 @@ def insert_races(conn, data):
 
 def insert_stages(conn, data):
     table = 'stage'
-    columns = ['id', 'race_id', 'number', 'date', 'distance', 'profile_icon', 'profile']
+    columns = ['race_id', 'number', 'date', 'distance', 'profile_icon', 'profile']
 
     cursor = conn.cursor()
     columns_str = ', '.join(columns)

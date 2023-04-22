@@ -24,7 +24,7 @@ public class Main extends Application {
 
     private final BorderPane root = new BorderPane();
     private final DataAccessLayer db = new DataAccessLayer("CyCalFX23");
-    private final ArrayList<Race> races = db.getOneDayRaces();
+    private final ArrayList<Race> races = db.getAllRaces();
     private final ImageCache imageCache = db.loadImageCache();
     private final MonthView monthView = new MonthView(this);
 
