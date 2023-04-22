@@ -6,11 +6,15 @@ import com.pviksy.cycalfx.GUI.MonthSelectMenu.MonthSelectMenu;
 import com.pviksy.cycalfx.GUI.Timespan.*;
 import com.pviksy.cycalfx.Service.ImageCache;
 import javafx.application.Application;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -25,6 +29,7 @@ public class Main extends Application {
     private final BorderPane root = new BorderPane();
     private final DataAccessLayer db = new DataAccessLayer("CyCalFX23");
     private final ArrayList<Race> races = db.getAllRaces();
+    private final ListProperty<Race> filteredRaces = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ImageCache imageCache = db.loadImageCache();
     private final MonthView monthView = new MonthView(this);
 
@@ -36,12 +41,14 @@ public class Main extends Application {
 
         SelectTimespan selectTimespanToggleButton = new SelectTimespan(new TimespanController(this));
 
-        VBox topContainer = new VBox();
-        topContainer.getChildren().addAll(selectTimespanToggleButton, createIncAndDecButtons(monthView));
+        HBox topContainer = new HBox();
+        topContainer.getChildren().addAll(createDecButton(monthView), selectTimespanToggleButton, createIncButton(monthView));
+        topContainer.setAlignment(Pos.CENTER);
         root.setTop(topContainer);
 
         root.setCenter(monthView);
         root.setRight(new MonthSelectMenu());
+
         Pane left = new Pane();
         left.setStyle("-fx-background-color: transparent;");
         left.setMinWidth(200); //to center the calendar
@@ -63,27 +70,26 @@ public class Main extends Application {
         root.setCenter(node);
     }
 
-    private HBox createIncAndDecButtons(MonthView monthView) {
+    private Button createDecButton(MonthView monthView) {
         Button decrement = new Button("Decrement");
-        Button increment = new Button("Increment");
 
         decrement.setOnAction(event -> {
             monthView.decrementMonth();
             root.setCenter(monthView);
         });
 
+        return decrement;
+    }
+
+    private Button createIncButton(MonthView monthView) {
+        Button increment = new Button("Increment");
+
         increment.setOnAction(event -> {
             monthView.incrementMonth();
             root.setCenter(monthView);
         });
 
-        HBox buttons = new HBox(decrement, increment);
-
-        buttons.setSpacing(10);
-        buttons.setAlignment(Pos.CENTER);
-        buttons.setPadding(new Insets(0, 0, 10, 0));
-
-        return buttons;
+        return increment;
     }
 
     public ArrayList<Race> getRaces() {

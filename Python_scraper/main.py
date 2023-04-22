@@ -118,8 +118,7 @@ def insert_races(dictionary):
             if key == 'stage_races':
                 insert_stage_race(url)
             elif key == 'one_day_races':
-                #insert_one_day_race(url)
-                pass
+                insert_one_day_race(url)
     db.insert_races(db.conn, races)
     db.insert_stages(db.conn, stages)
     print(stages)

@@ -157,7 +157,7 @@ public class DataAccessLayer {
                 String profileIcon = resultSet.getString("profile_icon");
                 String profile = resultSet.getString("profile");
 
-                races.add(new Race(id, category_id, name + "\nStage " + number, date, date, logo, flag, distance, profileIcon, profile));
+                races.add(new Race(id, category_id, "Stage " + number + " - " + name, date, date, logo, flag, distance, profileIcon, profile));
             }
 
             return races;
