@@ -1,4 +1,4 @@
-package com.pviksy.cycalfx.Service;
+package com.pviksy.cycalfx.data;
 
 import javafx.scene.image.Image;
 

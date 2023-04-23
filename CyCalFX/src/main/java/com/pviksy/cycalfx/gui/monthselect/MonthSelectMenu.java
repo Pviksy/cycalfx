@@ -1,4 +1,4 @@
-package com.pviksy.cycalfx.GUI.MonthSelectMenu;
+package com.pviksy.cycalfx.gui.monthselect;
 
 import javafx.scene.layout.VBox;
 

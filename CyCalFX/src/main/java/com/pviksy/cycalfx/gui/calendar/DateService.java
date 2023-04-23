@@ -1,4 +1,4 @@
-package com.pviksy.cycalfx.GUI.Calendar;
+package com.pviksy.cycalfx.gui.calendar;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;

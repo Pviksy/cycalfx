@@ -1,7 +1,6 @@
-package com.pviksy.cycalfx;
+package com.pviksy.cycalfx.data;
 
-import com.pviksy.cycalfx.Entities.Race;
-import com.pviksy.cycalfx.Service.ImageCache;
+import com.pviksy.cycalfx.data.entities.Race;
 
 import java.sql.*;
 import java.time.LocalDate;

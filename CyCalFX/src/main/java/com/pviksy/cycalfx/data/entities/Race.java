@@ -1,4 +1,4 @@
-package com.pviksy.cycalfx.Entities;
+package com.pviksy.cycalfx.data.entities;
 
 import java.sql.Date;
 

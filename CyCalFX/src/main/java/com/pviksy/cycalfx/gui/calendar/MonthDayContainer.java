@@ -1,7 +1,7 @@
-package com.pviksy.cycalfx.GUI.Calendar;
+package com.pviksy.cycalfx.gui.calendar;
 
-import com.pviksy.cycalfx.Main;
-import com.pviksy.cycalfx.Entities.Race;
+import com.pviksy.cycalfx.app.Main;
+import com.pviksy.cycalfx.data.entities.Race;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

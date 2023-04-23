@@ -1,26 +1,26 @@
-package com.pviksy.cycalfx;
+package com.pviksy.cycalfx.app;
 
-import com.pviksy.cycalfx.Entities.Race;
-import com.pviksy.cycalfx.GUI.Calendar.MonthView;
-import com.pviksy.cycalfx.GUI.MonthSelectMenu.MonthSelectMenu;
-import com.pviksy.cycalfx.GUI.Timespan.*;
-import com.pviksy.cycalfx.Service.ImageCache;
+import com.pviksy.cycalfx.data.DataAccessLayer;
+import com.pviksy.cycalfx.data.entities.Race;
+import com.pviksy.cycalfx.gui.calendar.MonthView;
+import com.pviksy.cycalfx.gui.monthselect.MonthSelectMenu;
+import com.pviksy.cycalfx.gui.timespan.*;
+import com.pviksy.cycalfx.data.ImageCache;
 import javafx.application.Application;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
@@ -39,6 +39,7 @@ public class Main extends Application implements MonthView.DateObserver {
 
     @Override
     public void start(Stage stage) {
+        selectedMonth.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         monthView.registerDateObserver(this);
         root.setStyle("-fx-background-color: #212832;");
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());

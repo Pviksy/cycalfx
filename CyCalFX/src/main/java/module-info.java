@@ -6,11 +6,15 @@ module com.pviksy.cycalfx {
     requires java.sql;
     requires jtds;
 
-    opens com.pviksy.cycalfx to javafx.fxml;
-    exports com.pviksy.cycalfx;
-    exports com.pviksy.cycalfx.GUI;
-    exports com.pviksy.cycalfx.Entities;
-    exports com.pviksy.cycalfx.GUI.Timespan;
-    exports com.pviksy.cycalfx.GUI.Calendar;
-    exports com.pviksy.cycalfx.Service;
+    exports com.pviksy.cycalfx.gui.timespan;
+    exports com.pviksy.cycalfx.gui.calendar;
+
+    exports com.pviksy.cycalfx.data;
+    opens com.pviksy.cycalfx.data to javafx.fxml;
+
+    exports com.pviksy.cycalfx.data.entities;
+    opens com.pviksy.cycalfx.data.entities to javafx.fxml;
+
+    exports com.pviksy.cycalfx.app;
+    opens com.pviksy.cycalfx.app to javafx.fxml;
 }

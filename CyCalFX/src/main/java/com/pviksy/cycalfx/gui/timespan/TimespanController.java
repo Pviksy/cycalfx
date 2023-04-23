@@ -1,6 +1,6 @@
-package com.pviksy.cycalfx.GUI.Timespan;
+package com.pviksy.cycalfx.gui.timespan;
 
-import com.pviksy.cycalfx.Main;
+import com.pviksy.cycalfx.app.Main;
 import javafx.scene.control.Label;
 
 public class TimespanController implements SelectTimespan.TimespanSelectionListener {

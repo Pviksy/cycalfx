@@ -1,4 +1,4 @@
-package com.pviksy.cycalfx.GUI.Timespan;
+package com.pviksy.cycalfx.gui.timespan;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
