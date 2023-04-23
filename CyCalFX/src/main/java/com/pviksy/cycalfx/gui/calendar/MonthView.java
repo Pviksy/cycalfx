@@ -21,20 +21,12 @@ public class MonthView extends GridPane {
     from the database, or be more static.
      */
 
-    public interface DateObserver {
-        void onDateChanged(LocalDate newDate);
-    }
-
-    private LocalDate date = LocalDate.now(); //.plusMonths(1);
+    private final CalendarModel calendarModel;
     private final Main main;
-    private final List<DateObserver> dateObservers = new ArrayList<>();
 
-    public void registerDateObserver(DateObserver observer) {
-        dateObservers.add(observer);
-    }
-
-    public MonthView(Main main) {
+    public MonthView(Main main, CalendarModel calendarModel) {
         this.main = main;
+        this.calendarModel = calendarModel;
 
         updateContent(main.getRaces());
 
@@ -47,9 +39,9 @@ public class MonthView extends GridPane {
 
         getChildren().clear();
 
-        int dayOfMonth = date.getDayOfMonth();
-        int monthLength = date.lengthOfMonth();
-        LocalDate firstDayOfMonth = date.minusDays(dayOfMonth - 1);
+        int dayOfMonth = calendarModel.getDate().getDayOfMonth();
+        int monthLength = calendarModel.getDate().lengthOfMonth();
+        LocalDate firstDayOfMonth = calendarModel.getDate().minusDays(dayOfMonth - 1);
         LocalDate lastDayOfMonth = firstDayOfMonth.plusDays(monthLength - 1);
         System.out.println("      firstDayOfMonth: " + firstDayOfMonth);
         System.out.println("       lastDayOfMonth: " + lastDayOfMonth);
@@ -128,30 +120,14 @@ public class MonthView extends GridPane {
         }
     }
 
-    public void incrementMonth() {
-        setDate(date.plusMonths(1));
-        updateContent(main.getRaces());
-
-        System.out.println(date);
-    }
 
     public void decrementMonth() {
-        setDate(date.minusMonths(1));
+        calendarModel.decrementMonth();
         updateContent(main.getRaces());
-
-        System.out.println(date);
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-
-        // Notify all observers
-        for (DateObserver observer : dateObservers) {
-            observer.onDateChanged(date);
-        }
-    }
-
-    public LocalDate getDate() {
-        return date;
+    public void incrementMonth() {
+        calendarModel.incrementMonth();
+        updateContent(main.getRaces());
     }
 }

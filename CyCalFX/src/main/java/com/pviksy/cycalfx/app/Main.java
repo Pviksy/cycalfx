@@ -2,6 +2,7 @@ package com.pviksy.cycalfx.app;
 
 import com.pviksy.cycalfx.data.DataAccessLayer;
 import com.pviksy.cycalfx.data.entities.Race;
+import com.pviksy.cycalfx.gui.calendar.CalendarModel;
 import com.pviksy.cycalfx.gui.calendar.MonthView;
 import com.pviksy.cycalfx.gui.monthselect.MonthSelectMenu;
 import com.pviksy.cycalfx.gui.timespan.*;
@@ -27,20 +28,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Main extends Application implements MonthView.DateObserver {
+public class Main extends Application implements CalendarModel.DateObserver {
 
     private final BorderPane root = new BorderPane();
     private final DataAccessLayer db = new DataAccessLayer("CyCalFX23");
     private final ArrayList<Race> races = db.getAllRaces();
     private final ListProperty<Race> filteredRaces = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ImageCache imageCache = db.loadImageCache();
-    private final MonthView monthView = new MonthView(this);
-    private Label selectedMonth = new Label(String.valueOf(monthView.getDate().getMonth()));
+    private final CalendarModel calendarModel = new CalendarModel();
+    private final MonthView monthView = new MonthView(this, calendarModel);
+    private Label selectedMonth = new Label(String.valueOf(calendarModel.getDate().getMonth()));
 
     @Override
     public void start(Stage stage) {
+
+        calendarModel.registerDateObserver(this);
+
         selectedMonth.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        monthView.registerDateObserver(this);
         root.setStyle("-fx-background-color: #212832;");
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
 
