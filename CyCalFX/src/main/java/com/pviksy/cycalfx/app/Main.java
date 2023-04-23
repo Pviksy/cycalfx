@@ -47,23 +47,25 @@ public class Main extends Application implements MonthView.DateObserver {
 
         SelectTimespan selectTimespanToggleButton = new SelectTimespan(new TimespanController(this));
 
+        TimespanStrategy strategy = new MonthStrategy(monthView);
+        TimespanControlButtons timespanControlButtons = new TimespanControlButtons(strategy);
+
         HBox topContainer = new HBox();
         topContainer.getChildren().addAll(
                 createLeftTop(),
-                createDecButton(monthView),
+                timespanControlButtons.getDecrementButton(),
                 selectTimespanToggleButton,
-                createIncButton(monthView),
+                timespanControlButtons.getIncrementButton(),
                 createRightTop());
         topContainer.setAlignment(Pos.CENTER);
         root.setTop(topContainer);
+
 
         Pane left = new Pane();
         left.setStyle("-fx-background-color: transparent;");
         left.setMinWidth(200); //to center the calendar
         root.setLeft(left);
-
         root.setRight(new MonthSelectMenu());
-
         Scene scene = new Scene(root);
         setStage(stage, scene);
     }
@@ -78,28 +80,6 @@ public class Main extends Application implements MonthView.DateObserver {
 
     public void updateCenterContent(Node node) {
         root.setCenter(node);
-    }
-
-    private Button createDecButton(MonthView monthView) {
-        Button decrement = new Button("Decrement");
-
-        decrement.setOnAction(event -> {
-            monthView.decrementMonth();
-            root.setCenter(monthView);
-        });
-
-        return decrement;
-    }
-
-    private Button createIncButton(MonthView monthView) {
-        Button increment = new Button("Increment");
-
-        increment.setOnAction(event -> {
-            monthView.incrementMonth();
-            root.setCenter(monthView);
-        });
-
-        return increment;
     }
 
     private HBox createLeftTop() {
