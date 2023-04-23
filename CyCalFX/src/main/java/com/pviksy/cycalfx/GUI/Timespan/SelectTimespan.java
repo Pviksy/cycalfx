@@ -34,6 +34,9 @@ public class SelectTimespan extends HBox {
 
         setAlignment(Pos.CENTER);
         setPadding(new Insets(10));
+
+        // Set the "Month" button selected by default
+        monthButton.setSelected(true);
     }
 
     private ToggleButton createToggleButton(String text, ToggleGroup group) {

@@ -21,8 +21,17 @@ public class MonthView extends GridPane {
     from the database, or be more static.
      */
 
+    public interface DateObserver {
+        void onDateChanged(LocalDate newDate);
+    }
+
     private LocalDate date = LocalDate.now(); //.plusMonths(1);
     private final Main main;
+    private final List<DateObserver> dateObservers = new ArrayList<>();
+
+    public void registerDateObserver(DateObserver observer) {
+        dateObservers.add(observer);
+    }
 
     public MonthView(Main main) {
         this.main = main;
@@ -92,7 +101,6 @@ public class MonthView extends GridPane {
                     dayLabel.getStyleClass().add("calendar-cell");
                 } else {
                     Label date = new Label(Integer.toString(dateIterator.getDayOfMonth()));
-                    //date.setAlignment(Pos.CENTER); // Center the text within the label
 
                     LocalDate finalDateIterator = dateIterator;
                     List<Race> filteredRaces = races.stream()
@@ -121,17 +129,29 @@ public class MonthView extends GridPane {
     }
 
     public void incrementMonth() {
-        date = date.plusMonths(1);
+        setDate(date.plusMonths(1));
         updateContent(main.getRaces());
 
         System.out.println(date);
     }
 
     public void decrementMonth() {
-        date = date.minusMonths(1);
+        setDate(date.minusMonths(1));
         updateContent(main.getRaces());
 
         System.out.println(date);
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+
+        // Notify all observers
+        for (DateObserver observer : dateObservers) {
+            observer.onDateChanged(date);
+        }
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
 }

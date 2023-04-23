@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -21,10 +22,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Main extends Application {
+public class Main extends Application implements MonthView.DateObserver {
 
     private final BorderPane root = new BorderPane();
     private final DataAccessLayer db = new DataAccessLayer("CyCalFX23");
@@ -32,9 +35,11 @@ public class Main extends Application {
     private final ListProperty<Race> filteredRaces = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ImageCache imageCache = db.loadImageCache();
     private final MonthView monthView = new MonthView(this);
+    private Label selectedMonth = new Label(String.valueOf(monthView.getDate().getMonth()));
 
     @Override
     public void start(Stage stage) {
+        monthView.registerDateObserver(this);
         root.setStyle("-fx-background-color: #212832;");
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
 
@@ -42,17 +47,21 @@ public class Main extends Application {
         SelectTimespan selectTimespanToggleButton = new SelectTimespan(new TimespanController(this));
 
         HBox topContainer = new HBox();
-        topContainer.getChildren().addAll(createDecButton(monthView), selectTimespanToggleButton, createIncButton(monthView));
+        topContainer.getChildren().addAll(
+                createLeftTop(),
+                createDecButton(monthView),
+                selectTimespanToggleButton,
+                createIncButton(monthView),
+                createRightTop());
         topContainer.setAlignment(Pos.CENTER);
         root.setTop(topContainer);
-
-        root.setCenter(monthView);
-        root.setRight(new MonthSelectMenu());
 
         Pane left = new Pane();
         left.setStyle("-fx-background-color: transparent;");
         left.setMinWidth(200); //to center the calendar
         root.setLeft(left);
+
+        root.setRight(new MonthSelectMenu());
 
         Scene scene = new Scene(root);
         setStage(stage, scene);
@@ -92,6 +101,25 @@ public class Main extends Application {
         return increment;
     }
 
+    private HBox createLeftTop() {
+        HBox leftTop = new HBox();
+        leftTop.setMinWidth(300);
+        leftTop.setAlignment(Pos.CENTER);
+        leftTop.getChildren().add(selectedMonth);
+
+        return leftTop;
+    }
+
+    private HBox createRightTop() {
+        HBox rightTop = new HBox();
+        rightTop.setMinWidth(300);
+        rightTop.setAlignment(Pos.CENTER);
+
+        rightTop.getChildren().add(new Label("right"));
+
+        return rightTop;
+    }
+
     public ArrayList<Race> getRaces() {
         return races;
     }
@@ -106,5 +134,10 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    @Override
+    public void onDateChanged(LocalDate newDate) {
+        selectedMonth.setText(String.valueOf(newDate.getMonth()));
     }
 }

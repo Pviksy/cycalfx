@@ -23,6 +23,4 @@ public class TimespanController implements SelectTimespan.TimespanSelectionListe
             default -> System.out.println("Invalid selection");
         }
     }
-
-
 }
