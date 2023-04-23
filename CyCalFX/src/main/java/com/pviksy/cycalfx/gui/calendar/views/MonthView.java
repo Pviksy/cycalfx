@@ -1,7 +1,9 @@
-package com.pviksy.cycalfx.gui.calendar;
+package com.pviksy.cycalfx.gui.calendar.views;
 
 import com.pviksy.cycalfx.data.entities.Race;
 import com.pviksy.cycalfx.app.Main;
+import com.pviksy.cycalfx.gui.calendar.CalendarModel;
+import com.pviksy.cycalfx.gui.calendar.MonthDayContainer;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -21,8 +23,8 @@ public class MonthView extends GridPane {
     from the database, or be more static.
      */
 
-    private final CalendarModel calendarModel;
     private final Main main;
+    private final CalendarModel calendarModel;
 
     public MonthView(Main main, CalendarModel calendarModel) {
         this.main = main;

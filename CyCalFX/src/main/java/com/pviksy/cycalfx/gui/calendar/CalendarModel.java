@@ -1,14 +1,27 @@
 package com.pviksy.cycalfx.gui.calendar;
 
+import com.pviksy.cycalfx.app.Main;
+import com.pviksy.cycalfx.gui.calendar.views.MonthView;
+import com.pviksy.cycalfx.gui.calendar.views.WeekView;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarModel {
     private LocalDate date = LocalDate.now();
+    private final Main main;
+    private final MonthView monthView;
+    private final WeekView weekView;
 
     public interface DateObserver {
         void onDateChanged(LocalDate newDate);
+    }
+
+    public CalendarModel(Main main) {
+        this.main = main;
+        this.monthView = new MonthView(main, this);
+        this.weekView = new WeekView(main, this);
     }
 
     private final List<DateObserver> dateObservers = new ArrayList<>();
@@ -17,15 +30,24 @@ public class CalendarModel {
         dateObservers.add(observer);
     }
 
-    public void incrementMonth() {
-        setDate(date.plusMonths(1));
-    }
-
     public void decrementMonth() {
         setDate(date.minusMonths(1));
     }
 
-    // Implement similar methods for incrementing and decrementing days, weeks, and years.
+    public void incrementMonth() {
+        setDate(date.plusMonths(1));
+    }
+
+    public void decrementWeek() {
+        setDate(date.minusWeeks(1));
+        System.out.println("decrement week called");
+    }
+
+    public void incrementWeek() {
+        setDate(date.plusWeeks(1));
+        System.out.println("increment week called");
+    }
+
 
     public void setDate(LocalDate date) {
         this.date = date;
@@ -38,5 +60,13 @@ public class CalendarModel {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public MonthView getMonthView() {
+        return monthView;
+    }
+
+    public WeekView getWeekView() {
+        return weekView;
     }
 }

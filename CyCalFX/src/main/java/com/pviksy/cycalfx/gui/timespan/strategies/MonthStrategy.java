@@ -1,6 +1,7 @@
-package com.pviksy.cycalfx.gui.timespan;
+package com.pviksy.cycalfx.gui.timespan.strategies;
 
-import com.pviksy.cycalfx.gui.calendar.MonthView;
+import com.pviksy.cycalfx.gui.calendar.views.MonthView;
+import com.pviksy.cycalfx.gui.timespan.TimespanStrategy;
 
 public class MonthStrategy implements TimespanStrategy {
 

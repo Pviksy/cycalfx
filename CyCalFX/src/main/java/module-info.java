@@ -17,4 +17,6 @@ module com.pviksy.cycalfx {
 
     exports com.pviksy.cycalfx.app;
     opens com.pviksy.cycalfx.app to javafx.fxml;
+    exports com.pviksy.cycalfx.gui.calendar.views;
+    exports com.pviksy.cycalfx.gui.timespan.strategies;
 }

@@ -7,18 +7,18 @@ public class TimespanControlButtons {
 
     private Button decrementButton;
     private Button incrementButton;
+    private TimespanController timespanController;
 
-
-    public TimespanControlButtons(TimespanStrategy strategy) {
+    public TimespanControlButtons(TimespanController timespanController) {
         decrementButton = new Button("Decrement");
         incrementButton = new Button("Increment");
 
         decrementButton.setOnAction(event -> {
-            strategy.decrement();
+            timespanController.getTimespanStrategy().decrement();
         });
 
         incrementButton.setOnAction(event -> {
-            strategy.increment();
+            timespanController.getTimespanStrategy().increment();
         });
     }
 

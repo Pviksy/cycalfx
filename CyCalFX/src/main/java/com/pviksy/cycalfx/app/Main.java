@@ -3,7 +3,8 @@ package com.pviksy.cycalfx.app;
 import com.pviksy.cycalfx.data.DataAccessLayer;
 import com.pviksy.cycalfx.data.entities.Race;
 import com.pviksy.cycalfx.gui.calendar.CalendarModel;
-import com.pviksy.cycalfx.gui.calendar.MonthView;
+import com.pviksy.cycalfx.gui.calendar.views.MonthView;
+import com.pviksy.cycalfx.gui.calendar.views.WeekView;
 import com.pviksy.cycalfx.gui.monthselect.MonthSelectMenu;
 import com.pviksy.cycalfx.gui.timespan.*;
 import com.pviksy.cycalfx.data.ImageCache;
@@ -14,7 +15,6 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -35,8 +35,7 @@ public class Main extends Application implements CalendarModel.DateObserver {
     private final ArrayList<Race> races = db.getAllRaces();
     private final ListProperty<Race> filteredRaces = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ImageCache imageCache = db.loadImageCache();
-    private final CalendarModel calendarModel = new CalendarModel();
-    private final MonthView monthView = new MonthView(this, calendarModel);
+    private final CalendarModel calendarModel = new CalendarModel(this);
     private Label selectedMonth = new Label(String.valueOf(calendarModel.getDate().getMonth()));
 
     @Override
@@ -48,11 +47,11 @@ public class Main extends Application implements CalendarModel.DateObserver {
         root.setStyle("-fx-background-color: #212832;");
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
 
+        TimespanController timespanController = new TimespanController(this, calendarModel);
 
-        SelectTimespan selectTimespanToggleButton = new SelectTimespan(new TimespanController(this));
+        SelectTimespan selectTimespanToggleButton = new SelectTimespan(timespanController);
+        TimespanControlButtons timespanControlButtons = new TimespanControlButtons(timespanController);
 
-        TimespanStrategy strategy = new MonthStrategy(monthView);
-        TimespanControlButtons timespanControlButtons = new TimespanControlButtons(strategy);
 
         HBox topContainer = new HBox();
         topContainer.getChildren().addAll(
@@ -95,14 +94,20 @@ public class Main extends Application implements CalendarModel.DateObserver {
         return leftTop;
     }
 
+    private Label label = new Label("Initial text");
+
     private HBox createRightTop() {
         HBox rightTop = new HBox();
         rightTop.setMinWidth(300);
         rightTop.setAlignment(Pos.CENTER);
 
-        rightTop.getChildren().add(new Label("right"));
+        rightTop.getChildren().add(label);
 
         return rightTop;
+    }
+
+    public void updateTopRightLabel(String text) {
+        label.setText(text);
     }
 
     public ArrayList<Race> getRaces() {
@@ -113,9 +118,6 @@ public class Main extends Application implements CalendarModel.DateObserver {
         return imageCache;
     }
 
-    public MonthView getMonthView() {
-        return monthView;
-    }
 
     public static void main(String[] args) {
         launch();
