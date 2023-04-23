@@ -15,13 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonthView extends GridPane {
-
-    /*
-    In the constructor, it can be determined how many weeks etc the grid
-    should be able to contain. This can depend on the information retrieved
-    from the database, or be more static.
-     */
+public class MonthView extends GridPane implements CalendarModel.DateObserver {
 
     private final Main main;
     private final CalendarModel calendarModel;
@@ -29,6 +23,7 @@ public class MonthView extends GridPane {
     public MonthView(Main main, CalendarModel calendarModel) {
         this.main = main;
         this.calendarModel = calendarModel;
+        calendarModel.registerDateObserver(this);
 
         updateContent(main.getRaces());
 
@@ -37,7 +32,7 @@ public class MonthView extends GridPane {
         this.setAlignment(Pos.TOP_CENTER);
     }
 
-    private void updateContent(ArrayList<Race> races) {
+    public void updateContent(ArrayList<Race> races) {
 
         getChildren().clear();
 
@@ -45,8 +40,6 @@ public class MonthView extends GridPane {
         int monthLength = calendarModel.getDate().lengthOfMonth();
         LocalDate firstDayOfMonth = calendarModel.getDate().minusDays(dayOfMonth - 1);
         LocalDate lastDayOfMonth = firstDayOfMonth.plusDays(monthLength - 1);
-        System.out.println("      firstDayOfMonth: " + firstDayOfMonth);
-        System.out.println("       lastDayOfMonth: " + lastDayOfMonth);
 
 
         // find first day of the given month to show
@@ -56,21 +49,16 @@ public class MonthView extends GridPane {
         } else {
             firstMondayOfCalendar = firstDayOfMonth;
         }
-        System.out.println("firstMondayOfCalendar: " + firstMondayOfCalendar);
-
 
         // find last day to show
         LocalDate lastSundayOfCalendar = firstDayOfMonth.plusMonths(1);
         if (lastSundayOfCalendar.getDayOfWeek() != DayOfWeek.SUNDAY) {
             lastSundayOfCalendar = lastSundayOfCalendar.plusDays(7 - lastSundayOfCalendar.getDayOfWeek().getValue());
         }
-        System.out.println(" lastSundayOfCalendar: " + lastSundayOfCalendar);
 
         int daysInCalendar = (int) ChronoUnit.DAYS.between(firstMondayOfCalendar, lastSundayOfCalendar) + 1; // fixes problem occuring when changing between years
-        System.out.println("       daysInCalendar: " + daysInCalendar);
 
         int weeksToDisplay = daysInCalendar / 7;
-        System.out.println("       weeksToDisplay: " + weeksToDisplay);
 
         LocalDate dateIterator = firstMondayOfCalendar;
 
@@ -104,7 +92,6 @@ public class MonthView extends GridPane {
                             })
                             .toList();
 
-
                     MonthDayContainer monthDayContainer = new MonthDayContainer(date, filteredRaces, main);
                     monthDayContainer.getStyleClass().add("month-day-container");
 
@@ -112,8 +99,12 @@ public class MonthView extends GridPane {
                     container.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
                     container.getStyleClass().add("calendar-cell");
                     container.getChildren().addAll(date, monthDayContainer);
-                    container.getStyleClass().add("calendar-cell");
-                    container.setAlignment(Pos.TOP_CENTER); // Center the components within the VBox
+                    container.setAlignment(Pos.TOP_CENTER);
+
+                    if (dateIterator.equals(calendarModel.getDate())) {
+                        container.setStyle("-fx-border-color: -primary-color; -fx-border-width: 2;");
+                             date.setStyle("-fx-text-fill: -primary-color;");
+                    }
 
                     add(container, days, weeks);
                     dateIterator = dateIterator.plusDays(1);
@@ -122,14 +113,8 @@ public class MonthView extends GridPane {
         }
     }
 
-
-    public void decrementMonth() {
-        calendarModel.decrementMonth();
-        updateContent(main.getRaces());
-    }
-
-    public void incrementMonth() {
-        calendarModel.incrementMonth();
+    @Override
+    public void onDateChanged(LocalDate newDate) {
         updateContent(main.getRaces());
     }
 }

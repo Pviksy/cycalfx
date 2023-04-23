@@ -27,11 +27,11 @@ public class TimespanController implements SelectTimespan.TimespanSelectionListe
                 main.updateCenterContent(new Label("Day"));
             }
             case WEEK -> {
-                timespanStrategy = new WeekStrategy(calendarModel.getWeekView());
+                timespanStrategy = new WeekStrategy(calendarModel);
                 main.updateCenterContent(new Label("Week"));
             }
             case MONTH -> {
-                timespanStrategy = new MonthStrategy(calendarModel.getMonthView());
+                timespanStrategy = new MonthStrategy(calendarModel);
                 main.updateCenterContent(calendarModel.getMonthView());
             }
             case YEAR -> {

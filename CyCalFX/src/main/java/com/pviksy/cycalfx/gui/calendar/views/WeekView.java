@@ -18,14 +18,4 @@ public class WeekView {
         main.updateTopRightLabel(calendarModel.getDate().toString());
         System.out.println("WeekView updateContent called");
     }
-
-    public void decrementWeek() {
-        calendarModel.decrementWeek();
-        updateContent();
-    }
-
-    public void incrementWeek() {
-        calendarModel.incrementWeek();
-        updateContent();
-    }
 }

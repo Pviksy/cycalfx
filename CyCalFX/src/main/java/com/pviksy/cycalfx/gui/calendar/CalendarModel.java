@@ -10,7 +10,6 @@ import java.util.List;
 
 public class CalendarModel {
     private LocalDate date = LocalDate.now();
-    private final Main main;
     private final MonthView monthView;
     private final WeekView weekView;
 
@@ -19,7 +18,6 @@ public class CalendarModel {
     }
 
     public CalendarModel(Main main) {
-        this.main = main;
         this.monthView = new MonthView(main, this);
         this.weekView = new WeekView(main, this);
     }
@@ -45,7 +43,7 @@ public class CalendarModel {
 
     public void incrementWeek() {
         setDate(date.plusWeeks(1));
-        System.out.println("increment week called");
+        System.out.println("Increment week called");
     }
 
 
