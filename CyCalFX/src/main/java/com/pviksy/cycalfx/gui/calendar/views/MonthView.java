@@ -95,6 +95,7 @@ public class MonthView extends GridPane implements CalendarModel.DateObserver {
                     MonthDayContainer monthDayContainer = new MonthDayContainer(date, filteredRaces, main);
                     monthDayContainer.getStyleClass().add("month-day-container");
 
+                    // find out if this container is necessary
                     VBox container = new VBox();
                     container.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
                     container.getStyleClass().add("calendar-cell");
