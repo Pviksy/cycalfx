@@ -6,7 +6,9 @@ import com.pviksy.cycalfx.gui.calendar.CalendarModel;
 import com.pviksy.cycalfx.gui.calendar.MonthDayContainer;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.time.DayOfWeek;
@@ -93,21 +95,14 @@ public class MonthView extends GridPane implements CalendarModel.DateObserver {
                             .toList();
 
                     MonthDayContainer monthDayContainer = new MonthDayContainer(date, filteredRaces, main);
-                    monthDayContainer.getStyleClass().add("month-day-container");
-
-                    // find out if this container is necessary
-                    VBox container = new VBox();
-                    container.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
-                    container.getStyleClass().add("calendar-cell");
-                    container.getChildren().addAll(date, monthDayContainer);
-                    container.setAlignment(Pos.TOP_CENTER);
+                    monthDayContainer.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
+                    monthDayContainer.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> calendarModel.setDate(finalDateIterator));
 
                     if (dateIterator.equals(calendarModel.getDate())) {
-                        container.setStyle("-fx-border-color: -primary-color; -fx-border-width: 2;");
-                             date.setStyle("-fx-text-fill: -primary-color;");
+                        monthDayContainer.getStyleClass().add("calendar-cell-on-current-date");
                     }
 
-                    add(container, days, weeks);
+                    add(monthDayContainer, days, weeks);
                     dateIterator = dateIterator.plusDays(1);
                 }
             }

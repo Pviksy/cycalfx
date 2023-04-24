@@ -101,6 +101,15 @@
     -fx-text-fill: #95969A;
 }
 
-.month-day-container Label {
+.calendar-cell-on-current-date {
+    -fx-border-color: -primary-color;
+    -fx-border-width: 2;
+}
+
+.calendar-cell-on-current-date Label {
+    -fx-text-fill: -primary-color;
+}
+
+.race-container Label {
     -fx-text-fill: -text-color;
 }

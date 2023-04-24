@@ -20,10 +20,10 @@ public class MonthDayContainer extends VBox {
 
         VBox allRacesToday = new VBox();
         allRacesToday.setSpacing(10);
+        allRacesToday.getStyleClass().add("race-container");
 
         for (Race race : races) {
             VBox raceInfoContainer = new VBox();
-            //raceInfoContainer.setStyle("-fx-background-color: #222831;");
 
             ImageView flag = createFlag(race);
             Label category = new Label(race.getCategory_id());
@@ -46,6 +46,8 @@ public class MonthDayContainer extends VBox {
         }
 
         getChildren().addAll(day, allRacesToday);
+        getStyleClass().add("calendar-cell");
+        setAlignment(Pos.TOP_CENTER);
     }
 
     private ImageView createFlag(Race race) {
