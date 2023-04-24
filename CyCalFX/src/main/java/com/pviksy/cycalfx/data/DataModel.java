@@ -1,5 +1,6 @@
 package com.pviksy.cycalfx.data;
 
+import com.pviksy.cycalfx.app.Main;
 import com.pviksy.cycalfx.data.entities.Race;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -14,11 +15,6 @@ public class DataModel {
     private final ImageCache imageCache = db.loadImageCache();
 
     //private final ListProperty<Race> filteredRaces = new SimpleListProperty<>(FXCollections.observableArrayList());
-
-
-    public DataAccessLayer getDb() {
-        return db;
-    }
 
     public ArrayList<Race> getRaces() {
         return races;
