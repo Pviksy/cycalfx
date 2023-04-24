@@ -10,6 +10,7 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -30,12 +31,14 @@ public class Main extends Application implements CenterContentUpdater {
         Top top = new Top(calendarModel, timespanController);
         root.setTop(top);
 
-        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
-        Scene scene = new Scene(root);
-        setStage(stage, scene);
+        setStage(stage, root);
     }
 
-    private void setStage(Stage stage, Scene scene) {
+    private void setStage(Stage stage, Parent root) {
+        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
+
+        Scene scene = new Scene(root);
+
         stage.setMaximized(true);
         stage.setScene(scene);
         stage.setTitle("CyCalFX");

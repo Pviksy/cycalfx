@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.util.List;
@@ -21,14 +22,19 @@ public class MonthDayContainer extends VBox {
 
         VBox allRacesToday = new VBox();
         allRacesToday.setSpacing(10);
-        allRacesToday.getStyleClass().add("race-container");
+        allRacesToday.getStyleClass().add("race-container-label");
 
         for (Race race : races) {
             VBox raceInfoContainer = new VBox();
+            raceInfoContainer.getStyleClass().addAll("race-container", "drop-shadow");
 
             ImageView flag = createFlag(race);
             Label category = new Label(race.getCategory_id());
+
             Label name = new Label(race.getName());
+            name.getStyleClass().add("race-name");
+            name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("Clicked: " + name.getText()));
+
             ImageView profileIcon = createProfileIcon(race);
             Label distance = createDistanceLabel(race);
 

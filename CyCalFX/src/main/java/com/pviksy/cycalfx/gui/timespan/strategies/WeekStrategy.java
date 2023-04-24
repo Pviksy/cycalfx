@@ -3,6 +3,7 @@ package com.pviksy.cycalfx.gui.timespan.strategies;
 import com.pviksy.cycalfx.gui.calendar.CalendarModel;
 import com.pviksy.cycalfx.gui.calendar.views.WeekView;
 import com.pviksy.cycalfx.gui.timespan.TimespanStrategy;
+import javafx.scene.Node;
 
 public class WeekStrategy implements TimespanStrategy {
 
@@ -10,6 +11,11 @@ public class WeekStrategy implements TimespanStrategy {
 
     public WeekStrategy(CalendarModel calendarModel) {
         this.calendarModel = calendarModel;
+    }
+
+    @Override
+    public Node getView() {
+        return calendarModel.getWeekView();
     }
 
     @Override
