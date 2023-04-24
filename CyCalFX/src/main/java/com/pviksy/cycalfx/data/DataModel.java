@@ -15,6 +15,11 @@ public class DataModel {
 
     //private final ListProperty<Race> filteredRaces = new SimpleListProperty<>(FXCollections.observableArrayList());
 
+
+    public DataAccessLayer getDb() {
+        return db;
+    }
+
     public ArrayList<Race> getRaces() {
         return races;
     }

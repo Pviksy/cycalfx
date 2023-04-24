@@ -3,6 +3,8 @@ package com.pviksy.cycalfx.gui.calendar;
 import com.pviksy.cycalfx.app.Main;
 import com.pviksy.cycalfx.data.DataModel;
 import com.pviksy.cycalfx.data.entities.Race;
+import com.pviksy.cycalfx.gui.race.RaceSelectionListener;
+import com.pviksy.cycalfx.gui.race.RaceViewController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -33,7 +35,8 @@ public class MonthDayContainer extends VBox {
 
             Label name = new Label(race.getName());
             name.getStyleClass().add("race-name");
-            name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("Clicked: " + name.getText()));
+            // should this eventhandler be here? not view
+            name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.out.println("Clicked: " + race.getName()));
 
             ImageView profileIcon = createProfileIcon(race);
             Label distance = createDistanceLabel(race);

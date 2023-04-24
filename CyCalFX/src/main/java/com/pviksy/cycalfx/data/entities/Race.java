@@ -110,7 +110,7 @@ public class Race {
 
     @Override
     public String toString() {
-        return "Race{" +
+        return "Race {" +
                 "id=" + id +
                 ", category_id='" + category_id + '\'' +
                 ", name='" + name + '\'' +
