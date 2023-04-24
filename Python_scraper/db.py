@@ -1,7 +1,7 @@
 import pyodbc as pyodbc
 
 DRIVER_NAME = 'SQL SERVER'
-SERVER_NAME = 'DESKTOP-8KEOEI7\\SQLEXPRESS'
+SERVER_NAME = 'DESKTOP-NQ6LCJS\\SQLEXPRESS'
 DB_NAME = 'CyCalFX23'
 
 conn = pyodbc.connect('Driver=' + DRIVER_NAME + ';'

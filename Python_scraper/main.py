@@ -1,3 +1,5 @@
+import html5lib as html5lib
+
 import db
 import scrape
 import service
@@ -72,6 +74,8 @@ def insert_stage_race(url):
     logo                 = scrape.logo(main_page)
     flag                 = scrape.flag(sidebox)
 
+    print(name)
+
     race = (race_id, category, name, start_date, end_date, logo, flag, None, None, None)
     races.append(race)
 
@@ -93,6 +97,8 @@ def insert_stage_race(url):
 
 
 def insert_one_day_race(url):
+    print(url)
+
     main_page    = scrape.get_soup(url)
     sideboxes    = main_page.find_all('div', class_='sideBox')
 
@@ -105,6 +111,8 @@ def insert_one_day_race(url):
     distance     = scrape.distance(sideboxes[0])
     profile_icon = scrape.profile_icon(sideboxes[0])
     profile      = scrape.profile(sideboxes)
+
+    print(name)
 
     race = (race_id, category, name, date, date, logo, flag, distance, profile_icon, profile)
 
@@ -121,7 +129,6 @@ def insert_races(dictionary):
                 insert_one_day_race(url)
     db.insert_races(db.conn, races)
     db.insert_stages(db.conn, stages)
-    print(stages)
 
 
 insert_races(race_urls)
