@@ -1,6 +1,7 @@
 package com.pviksy.cycalfx.gui.calendar;
 
 import com.pviksy.cycalfx.app.Main;
+import com.pviksy.cycalfx.data.DataModel;
 import com.pviksy.cycalfx.data.entities.Race;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,10 +14,10 @@ import java.util.List;
 
 public class MonthDayContainer extends VBox {
 
-    private final Main main;
+    private final DataModel dataModel;
 
-    public MonthDayContainer(Label day, List<Race> races, Main main) {
-        this.main = main;
+    public MonthDayContainer(Label day, List<Race> races, DataModel dataModel) {
+        this.dataModel = dataModel;
 
         VBox allRacesToday = new VBox();
         allRacesToday.setSpacing(10);
@@ -54,7 +55,7 @@ public class MonthDayContainer extends VBox {
 
         ImageView flag = new ImageView();
         String flagImageURL = race.getFlag();
-        Image flagImage = main.getImageCache().getImage(flagImageURL);
+        Image flagImage = dataModel.getImageCache().getImage(flagImageURL);
         flag.setImage(flagImage);
         flag.setFitHeight(16);
         flag.setPreserveRatio(true);
@@ -67,7 +68,7 @@ public class MonthDayContainer extends VBox {
         ImageView profileIcon = new ImageView();
         if (race.getProfileIcon() != null) {
             String profileIconImageURL = "https://firstcycling.com/" + race.getProfileIcon();
-            Image profileIconImage = main.getImageCache().getImage(profileIconImageURL);
+            Image profileIconImage = dataModel.getImageCache().getImage(profileIconImageURL);
             profileIcon.setImage(profileIconImage);
             profileIcon.setFitHeight(14);
             profileIcon.setPreserveRatio(true);

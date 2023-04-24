@@ -1,5 +1,6 @@
 package com.pviksy.cycalfx.gui.timespan;
 
+import com.pviksy.cycalfx.app.CenterContentUpdater;
 import com.pviksy.cycalfx.app.Main;
 import com.pviksy.cycalfx.gui.calendar.CalendarModel;
 import com.pviksy.cycalfx.gui.timespan.strategies.MonthStrategy;
@@ -8,12 +9,13 @@ import javafx.scene.control.Label;
 
 public class TimespanController implements SelectTimespan.TimespanSelectionListener {
 
-    private final Main main;
+    private final CenterContentUpdater centerContentUpdater;
     private final CalendarModel calendarModel;
     private TimespanStrategy timespanStrategy;
 
-    public TimespanController(Main main, CalendarModel calendarModel) {
-        this.main = main;
+
+    public TimespanController(CenterContentUpdater centerContentUpdater, CalendarModel calendarModel) {
+        this.centerContentUpdater = centerContentUpdater;
         this.calendarModel = calendarModel;
     }
 
@@ -24,19 +26,19 @@ public class TimespanController implements SelectTimespan.TimespanSelectionListe
         switch (timespan) {
             case DAY -> {
                 //timespanStrategy = new DayStrategy(calendarModel);
-                main.updateCenterContent(new Label("Day"));
+                centerContentUpdater.updateCenterContent(new Label("Day"));
             }
             case WEEK -> {
                 timespanStrategy = new WeekStrategy(calendarModel);
-                main.updateCenterContent(new Label("Week"));
+                centerContentUpdater.updateCenterContent(new Label("Week"));
             }
             case MONTH -> {
                 timespanStrategy = new MonthStrategy(calendarModel);
-                main.updateCenterContent(calendarModel.getMonthView());
+                centerContentUpdater.updateCenterContent(calendarModel.getMonthView());
             }
             case YEAR -> {
                 //timespanStrategy = new YearStrategy(calendarModel);
-                main.updateCenterContent(new Label("Year"));
+                centerContentUpdater.updateCenterContent(new Label("Year"));
             }
             default -> System.out.println("Invalid selection");
         }

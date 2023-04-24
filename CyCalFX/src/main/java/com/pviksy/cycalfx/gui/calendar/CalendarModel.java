@@ -1,6 +1,7 @@
 package com.pviksy.cycalfx.gui.calendar;
 
 import com.pviksy.cycalfx.app.Main;
+import com.pviksy.cycalfx.data.DataModel;
 import com.pviksy.cycalfx.gui.calendar.views.MonthView;
 import com.pviksy.cycalfx.gui.calendar.views.WeekView;
 
@@ -17,9 +18,9 @@ public class CalendarModel {
         void onDateChanged(LocalDate newDate);
     }
 
-    public CalendarModel(Main main) {
-        this.monthView = new MonthView(main, this);
-        this.weekView = new WeekView(main, this);
+    public CalendarModel(DataModel dataModel) {
+        this.monthView = new MonthView(dataModel, this);
+        this.weekView = new WeekView(dataModel, this);
     }
 
     private final List<DateObserver> dateObservers = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.pviksy.cycalfx.gui.calendar.views;
 
+import com.pviksy.cycalfx.data.DataModel;
 import com.pviksy.cycalfx.data.entities.Race;
 import com.pviksy.cycalfx.app.Main;
 import com.pviksy.cycalfx.gui.calendar.CalendarModel;
@@ -19,15 +20,15 @@ import java.util.List;
 
 public class MonthView extends GridPane implements CalendarModel.DateObserver {
 
-    private final Main main;
+    private final DataModel dataModel;
     private final CalendarModel calendarModel;
 
-    public MonthView(Main main, CalendarModel calendarModel) {
-        this.main = main;
+    public MonthView(DataModel dataModel, CalendarModel calendarModel) {
+        this.dataModel = dataModel;
         this.calendarModel = calendarModel;
         calendarModel.registerDateObserver(this);
 
-        updateContent(main.getRaces());
+        updateContent(dataModel.getRaces());
 
         setHgap(10);
         setVgap(10);
@@ -94,7 +95,7 @@ public class MonthView extends GridPane implements CalendarModel.DateObserver {
                             })
                             .toList();
 
-                    MonthDayContainer monthDayContainer = new MonthDayContainer(date, filteredRaces, main);
+                    MonthDayContainer monthDayContainer = new MonthDayContainer(date, filteredRaces, dataModel);
                     monthDayContainer.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
                     monthDayContainer.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> calendarModel.setDate(finalDateIterator));
 
@@ -111,6 +112,6 @@ public class MonthView extends GridPane implements CalendarModel.DateObserver {
 
     @Override
     public void onDateChanged(LocalDate newDate) {
-        updateContent(main.getRaces());
+        updateContent(dataModel.getRaces());
     }
 }
