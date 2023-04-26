@@ -1,7 +1,6 @@
 package com.pviksy.cycalfx.gui.timespan;
 
 import com.pviksy.cycalfx.app.CenterContentUpdater;
-import com.pviksy.cycalfx.app.Main;
 import com.pviksy.cycalfx.gui.calendar.CalendarModel;
 import com.pviksy.cycalfx.gui.timespan.strategies.MonthStrategy;
 import com.pviksy.cycalfx.gui.timespan.strategies.WeekStrategy;

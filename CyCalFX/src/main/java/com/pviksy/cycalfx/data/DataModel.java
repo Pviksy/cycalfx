@@ -1,10 +1,6 @@
 package com.pviksy.cycalfx.data;
 
-import com.pviksy.cycalfx.app.Main;
 import com.pviksy.cycalfx.data.entities.Race;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
 
